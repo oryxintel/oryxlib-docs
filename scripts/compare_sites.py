@@ -265,7 +265,7 @@ def main(argv=None) -> int:
     ap = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     ap.add_argument("old", type=Path)
     ap.add_argument("new", type=Path)
-    ap.add_argument("--allow", help="file listing site-relative paths allowed only in NEW")
+    ap.add_argument("--allow", help="file of accepted differences: site-relative paths, or description:<page> lines")
     args = ap.parse_args(argv)
     problems = compare(args.old, args.new, _read_allow(args.allow))
     for p in problems:

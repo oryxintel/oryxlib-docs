@@ -76,7 +76,7 @@
   }
   </script>
   {% endif %}
-  {% if page and not (page.is_homepage or page.url in ('', './', '/')) %}
+  {% if page and page.title and page.url != '404.html' and not (page.is_homepage or page.url in ('', './', '/')) %}
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",

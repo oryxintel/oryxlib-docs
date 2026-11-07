@@ -33,6 +33,7 @@ def test_fetch_names_missing_repo(tmp_path):
         bd.fetch_sources(src, dest)
     assert "oryxeval" in str(exc.value)
 
+
 def test_blog_excerpt_marker_required(tmp_path):
     posts = tmp_path / "docs" / "blog" / "posts"
     posts.mkdir(parents=True)
@@ -42,3 +43,41 @@ def test_blog_excerpt_marker_required(tmp_path):
     with pytest.raises(SystemExit) as exc:
         bd.check_blog_excerpts(tmp_path)
     assert "bad.md" in str(exc.value) and "ok.md" not in str(exc.value)
+
+
+CHANGELOG = """# Changelog
+
+## [Unreleased]
+- x
+
+## [26.11.6] - 2026-11-06
+- y
+
+## [26.9.30] - 2026-09-30
+"""
+
+
+def _changelog(tmp_path, text=CHANGELOG):
+    p = tmp_path / "CHANGELOG.md"
+    p.write_text(text, encoding="utf-8")
+    return p
+
+
+def test_newest_released_version_skips_unreleased(tmp_path):
+    assert bd.newest_released_version(_changelog(tmp_path)) == "26.11.6"
+
+
+def test_stale_install_fails_naming_oryxflow(tmp_path):
+    with pytest.raises(SystemExit) as exc:
+        bd.check_installed_version(_changelog(tmp_path), "26.11.5")
+    assert "oryxflow" in str(exc.value) and "26.11.6" in str(exc.value)
+
+
+def test_numeric_not_string_version_compare(tmp_path):
+    with pytest.raises(SystemExit):
+        bd.check_installed_version(_changelog(tmp_path), "26.9.30")
+
+
+def test_current_or_newer_install_ok(tmp_path):
+    bd.check_installed_version(_changelog(tmp_path), "26.11.6")
+    bd.check_installed_version(_changelog(tmp_path), "26.12.1")

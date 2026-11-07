@@ -113,6 +113,35 @@ def check_front_matter():
         )
 
 
+_VERSION_HEADING_RE = re.compile(r"^##[ \t]+\[(\d+)\.(\d+)\.(\d+)\]", re.MULTILINE)
+
+
+def newest_released_version(changelog: Path) -> str:
+    """Highest calver (YY.M.D) in the changelog's `## [version]` headings; skips Unreleased."""
+    text = Path(changelog).read_text(encoding="utf-8-sig")
+    versions = [tuple(int(g) for g in m.groups()) for m in _VERSION_HEADING_RE.finditer(text)]
+    if not versions:
+        sys.exit(f"ERROR: no '## [YY.M.D]' release heading found in {changelog}.")
+    return ".".join(str(n) for n in max(versions))
+
+
+def check_installed_version(changelog: Path, installed: str) -> None:
+    """Fail when the installed oryxflow is older than the newest release in its changelog.
+
+    The API page documents the installed package, so a stale install would publish an API
+    older than the changelog beside it. Compared numerically, not as strings.
+    """
+    newest = newest_released_version(changelog)
+    as_tuple = lambda v: tuple(int(n) for n in v.split(".")[:3])  # noqa: E731
+    if as_tuple(installed) < as_tuple(newest):
+        sys.exit(
+            f"ERROR: installed oryxflow {installed} is older than the newest release {newest} "
+            "in its CHANGELOG.md, so the API page would document an older oryxflow.\n"
+            "       Reinstall from the sibling checkout: pip install ../oryxflow"
+        )
+    print(f"oryxflow installed {installed}; newest changelog release {newest}", flush=True)
+
+
 def check_blog_excerpts(root: Path = ROOT) -> None:
     """Every blog post needs a <!-- more --> marker (MkDocs blog `post_excerpt: required`).
 
@@ -159,7 +188,6 @@ def main():
 
     # Relative --src-root / ORYX_SRC_ROOT resolve against the repo, not the caller's cwd.
     src_root = args.src_root if args.src_root.is_absolute() else (ROOT / args.src_root)
-    fetch_sources(src_root, ROOT / "_external")
 
     # Always: a page whose front matter doesn't parse renders it as visible text.
     check_front_matter()
@@ -170,6 +198,12 @@ def main():
     if args.regen:
         generate(check=False)
         return
+
+    # Build path only: needs the sibling checkouts (the --regen hook does not).
+    fetch_sources(src_root, ROOT / "_external")
+    import oryxflow
+
+    check_installed_version(ROOT / "_external" / "oryxflow" / "CHANGELOG.md", oryxflow.__version__)
 
     if not args.skip_tests:
         generate(check=args.check)
