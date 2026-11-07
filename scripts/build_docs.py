@@ -42,6 +42,7 @@ import tempfile
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 # Sibling repos whose CHANGELOG.md the site includes; copied into _external/<repo>/.
 EXTERNAL_REPOS = ("oryxflow", "oryxeval")
@@ -213,6 +214,15 @@ def main():
     if args.strict:
         build.append("--strict")
     run(build)
+
+    # Zensical has no git-revision-date plugin: stamp sitemap <lastmod> and JSON-LD
+    # dateModified from git commit dates (see scripts/stamp_lastmod.py).
+    import stamp_lastmod
+
+    docs = ROOT / "docs"
+    n_loc = stamp_lastmod.stamp_lastmod(ROOT / "site", docs)
+    n_mod = stamp_lastmod.stamp_date_modified(ROOT / "site", docs)
+    print(f"stamped <lastmod> on {n_loc} sitemap entries, dateModified on {n_mod} pages", flush=True)
     print("\nOK: site built to ./site", flush=True)
 
 
