@@ -72,18 +72,60 @@ def git_date(path: Path, cwd: Path) -> "str | None":
     return out if r.returncode == 0 and out else None
 
 
-def dates_by_url(docs_dir: Path) -> "dict[str, str]":
-    """{url path: git date} for every docs page that has a commit."""
+class PageDates(dict):
+    """{url path: git date} for source pages, plus dates for generated blog pages.
+
+    Generated pages (no source file) are resolved on lookup: the blog index and its
+    pagination use the newest post date, category pages (and pagination) the newest in
+    that category, year archives (and pagination) the newest post of that year.
+    """
+
+    def __init__(self, pages, posts):
+        super().__init__(pages)
+        self.posts = posts  # [(date, category slugs, year)]
+
+    def _newest(self, pred=lambda p: True):
+        ds = [p[0] for p in self.posts if pred(p)]
+        return max(ds) if ds else None
+
+    def __missing__(self, url):
+        m = re.fullmatch(r"blog/(?:page/\d+/)?", url)
+        if m:
+            d = self._newest()
+        elif (m := re.fullmatch(r"blog/category/([^/]+)/(?:page/\d+/)?", url)):
+            d = self._newest(lambda p: m.group(1) in p[1])
+        elif (m := re.fullmatch(r"blog/archive/(\d{4})/(?:page/\d+/)?", url)):
+            d = self._newest(lambda p: p[2] == m.group(1))
+        else:
+            d = None
+        if d is None:
+            raise KeyError(url)
+        return d
+
+    def get(self, url, default=None):
+        try:
+            return self[url]
+        except KeyError:
+            return default
+
+
+def dates_by_url(docs_dir: Path) -> PageDates:
+    """Git dates by url path for every docs page that has a commit (plus generated blog pages)."""
     docs_dir = Path(docs_dir).resolve()
-    out = {}
+    out, posts = {}, []
     for md in sorted(docs_dir.rglob("*.md")):
         url = url_for_source(md, docs_dir)
         if url is None:
             continue
         d = git_date(md, docs_dir)
-        if d:
-            out[url] = d
-    return out
+        if not d:
+            continue
+        out[url] = d
+        if md.relative_to(docs_dir).as_posix().startswith("blog/posts/"):
+            meta = _front_matter(md)
+            cats = {slugify(c) for c in meta.get("categories") or []}
+            posts.append((d, cats, str(meta.get("date", ""))[:4]))
+    return PageDates(out, posts)
 
 
 def stamp_lastmod(site: Path, docs_dir: Path) -> int:
@@ -124,9 +166,12 @@ def stamp_date_modified(site: Path, docs_dir: Path) -> int:
     """Set JSON-LD dateModified on each page that has a git date; return pages stamped."""
     site = Path(site)
     count = 0
-    for url, d in dates_by_url(docs_dir).items():
-        page = site / url / "index.html"
-        if not page.is_file():
+    dates = dates_by_url(docs_dir)
+    for page in sorted(site.rglob("index.html")):
+        url = page.parent.relative_to(site).as_posix()
+        url = "" if url == "." else url + "/"
+        d = dates.get(url)
+        if not d:
             continue
         text = page.read_text(encoding="utf-8")
         hit = False

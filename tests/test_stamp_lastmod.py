@@ -99,3 +99,22 @@ def test_date_modified_skips_pages_without_git_date(site_repo):
     html = _page(site, "docs/uncommitted", {"@type": "TechArticle", "headline": "U"})
     assert sl.stamp_date_modified(site, docs) == 0
     assert (site / "docs/uncommitted/index.html").read_text(encoding="utf-8") == html
+
+
+def test_generated_blog_pages_use_newest_post_date(tmp_path):
+    docs = tmp_path / "docs"
+    _git(tmp_path, "init", "-q")
+    _write(docs / "blog" / "index.md", "# Blog\n")
+    _write(docs / "blog" / "posts" / "p1.md", "---\ndate: 2025-01-01\nslug: one\ncategories:\n  - Alpha\n---\nx\n")
+    _write(docs / "blog" / "posts" / "p2.md", "---\ndate: 2026-02-02\nslug: two\ncategories:\n  - Beta Cat\n---\nx\n")
+    _git(tmp_path, "add", "docs/blog/index.md", "docs/blog/posts/p1.md")
+    _git(tmp_path, "commit", "-q", "-m", "1", date="2025-05-05")
+    _git(tmp_path, "add", "docs/blog/posts/p2.md")
+    _git(tmp_path, "commit", "-q", "-m", "2", date="2026-06-06")
+    d = sl.dates_by_url(docs)
+    assert d["blog/category/alpha/"] == "2025-05-05"
+    assert d["blog/category/alpha/page/2/"] == "2025-05-05"
+    assert d["blog/category/beta-cat/"] == "2026-06-06"
+    assert d["blog/page/2/"] == "2026-06-06"
+    assert d["blog/archive/2025/"] == "2025-05-05"
+    assert d["blog/archive/2026/page/3/"] == "2026-06-06"
