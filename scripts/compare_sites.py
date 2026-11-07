@@ -16,6 +16,8 @@ Exit code 1 when any problem is found. ``--allow`` names a file with one entry p
 * ``sitemap-loc:<url>``: that <loc> may be present only in NEW's sitemap.
 * ``llms-url:<url>``: that URL may be present only in NEW's llms.txt.
 * ``llms-sections``: llms.txt section headings may differ (a deliberate restructure).
+* ``redirects-added:<line>``: that exact line may be present only in NEW's _redirects (every
+  other line must be unchanged and in the same order; nothing may be removed).
 * ``edit-link-prefix:<old>=><new>``: an "Edit this page" href starting with <old> in OLD
   may appear as the same href with <old> replaced by <new> in NEW (the edit link's
   host/repo moved; the file path part must be unchanged).
@@ -177,14 +179,31 @@ def _rule_pages(old_pages, new_pages, allow):
     return probs
 
 
-def _rule_exact_files(old: Path, new: Path):
+def _redirects_only_added(o: Path, n: Path, allow) -> bool:
+    """True when NEW's _redirects is OLD's plus lines each allowed by `redirects-added:<line>`."""
+    if o.name != "_redirects":
+        return False
+    old_lines = o.read_text(encoding="utf-8").splitlines()
+    new_lines = n.read_text(encoding="utf-8").splitlines()
+    it = iter(new_lines)
+    if not all(line in it for line in old_lines):  # OLD must be a subsequence of NEW
+        return False
+    extra = list(new_lines)
+    for line in old_lines:
+        extra.remove(line)
+    return all(not ln.strip() or ln.strip().startswith("#") or f"redirects-added:{ln.strip()}" in allow
+               for ln in extra)
+
+
+def _rule_exact_files(old: Path, new: Path, allow=frozenset()):
     probs = []
     for name in EXACT_FILES:
         o, n = old / name, new / name
         if o.is_file() and not n.is_file():
             probs.append(f"{name}: missing from new site")
         elif o.is_file() and o.read_bytes() != n.read_bytes():
-            probs.append(f"{name}: not byte-identical to old site")
+            if not _redirects_only_added(o, n, allow):
+                probs.append(f"{name}: not byte-identical to old site")
     return probs
 
 
@@ -283,7 +302,7 @@ def compare(old: Path, new: Path, allow: set[str]) -> list[str]:
     new_pages = [p for p in new_all if p.endswith(".html")]
 
     probs = _rule_pages(old_pages, new_pages, allow)
-    probs += _rule_exact_files(old, new)
+    probs += _rule_exact_files(old, new, allow)
     probs += _rule_non_page_files(old_all, new_all, allow)
     probs += _rule_sitemap(old, new, allow)
     probs += _rule_llms(old, new, allow)

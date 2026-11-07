@@ -181,3 +181,16 @@ def test_article_modified_time_meta_added_after_og_type(site_repo):
     assert sl.stamp_date_modified(site, docs) == 0
     assert (site / "docs/a/index.html").read_text(encoding="utf-8").count("article:modified_time") == 1
     assert "article:modified_time" not in (site / "docs/other/index.html").read_text(encoding="utf-8")
+
+
+def test_redirect_stub_dropped_from_sitemap(site_repo):
+    docs, site = site_repo
+    _write(docs / "docs" / "alias.md", "---\ntemplate: redirect.html\n---\nstub\n")
+    text = (site / "sitemap.xml").read_text(encoding="utf-8").replace(
+        "</urlset>", f"    <url>\n         <loc>{BASE}/docs/alias/</loc>\n    </url>\n</urlset>")
+    (site / "sitemap.xml").write_text(text, encoding="utf-8")
+    assert sl.redirect_stub_urls(docs) == {"docs/alias/"}
+    sl.stamp_lastmod(site, docs)
+    out = (site / "sitemap.xml").read_text(encoding="utf-8")
+    assert "/docs/alias/" not in out
+    assert "/docs/other/" in out and out.count("<url>") == 3 and out.rstrip().endswith("</urlset>")

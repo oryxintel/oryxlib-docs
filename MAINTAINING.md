@@ -6,9 +6,9 @@ must update pages here. This repo is separate: work in `../oryxlib-docs`, using 
 
 | Source repo | Docs pages to update (paths from this repo's root) |
 | --- | --- |
-| `oryxflow` | the oryxflow tab: `docs/index.md`, `docs/docs/index.md`, `why-oryxflow.md`, `installation.md`, `quickstart.md`, the guide and advanced pages in `docs/docs/` (`tasks.md`, `workflow.md`, `run.md`, `targets.md`, `advparam.md`, ...), `docs/docs/collaborate.md`; the API page `docs/docs/reference.md` is generated from the installed package's docstrings; changelog page `docs/docs/changelog.md` (snapshot, see below) |
-| `oryxeval` | `docs/docs/llm-evals-quickstart.md`, `llm-evals.md`, `llm-evals-prompts.md`, `llm-evals-api.md`, `llm-evals-checklist.md`, `docs/docs/claude-plugin/evals.md`, changelog page `docs/docs/llm-evals-changelog.md` |
-| `oryxflow-claude-plugin` | the Claude Code tab: `docs/docs/claude-plugin/index.md`, `trust.md`, `commands.md`, `project-structure.md`, `coding-standards.md`, `why.md`, plus `docs/docs/claude-code-for-data-science.md`, `docs/docs/ai-ready.md` |
+| `oryxflow` | the oryxflow tab: `docs/index.md`, `docs/docs/index.md`, `why-oryxflow.md`, `installation.md`, `quickstart.md`, the guide and advanced pages in `docs/docs/` (`tasks.md`, `workflow.md`, `run.md`, `targets.md`, `advparam.md`, ...), `docs/docs/collaborate.md` (the export/import page, in the Guide); the API page `docs/docs/reference.md` is generated from the installed package's docstrings; changelog page `docs/docs/changelog.md` (snapshot, see below) |
+| `oryxeval` | the landing `docs/docs/oryxeval.md` (`/docs/oryxeval/`), `docs/docs/llm-evals-quickstart.md`, `llm-evals.md`, `llm-evals-prompts.md`, `llm-evals-api.md`, `llm-evals-checklist.md`, `docs/docs/claude-plugin/evals.md`, changelog page `docs/docs/llm-evals-changelog.md` |
+| `oryxflow-claude-plugin` | the "Claude Code plugin" section of the oryxflow tab: `docs/docs/claude-plugin/index.md`, `trust.md`, `commands.md`, `project-structure.md`, `coding-standards.md`, `why.md`, plus `docs/docs/claude-code-for-data-science.md`, `docs/docs/ai-ready.md` |
 | `oryxeval-claude-plugin` | `docs/docs/claude-plugin/evals.md` and `docs/docs/claude-plugin/commands.md` (the only pages that name its `/oryxeval:` commands) |
 
 - **When an update is required:** any user-facing change: a new, renamed or removed API, parameter,

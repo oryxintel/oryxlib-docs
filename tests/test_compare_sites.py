@@ -300,3 +300,14 @@ def test_title_difference_allowed_per_page(tmp_path):
 def test_equal_titles_pass(tmp_path):
     old, new = two(tmp_path)
     assert compare(old, new, set()) == []
+
+
+def test_redirects_added_line_allowed_only_when_listed(tmp_path):
+    old, new = two(tmp_path, new_extra={"_redirects": "/a /b 301\n\n# note\n/x / 301\n"})
+    assert any("_redirects" in p for p in compare(old, new, set()))
+    assert not any("_redirects" in p for p in compare(old, new, {"redirects-added:/x / 301"}))
+
+
+def test_redirects_removed_or_changed_line_never_allowed(tmp_path):
+    old, new = two(tmp_path, new_extra={"_redirects": "/a /c 301\n/x / 301\n"})
+    assert any("_redirects" in p for p in compare(old, new, {"redirects-added:/x / 301", "redirects-added:/a /c 301"}))

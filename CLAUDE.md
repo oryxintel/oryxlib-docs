@@ -51,14 +51,16 @@ trustworthy, accurate AI data analysis"; a page about one library speaks about t
 
 | Tab | Pages |
 | --- | --- |
-| Home | `index.md` |
-| oryxflow | `docs/index.md`, why, installation, quickstart, Guide, Advanced, Example (ML), glossary, supply chain, API reference, changelog |
-| Knowledge | `docs/collaborate.md` |
-| oryxeval | the five `docs/llm-evals*.md` pages, `docs/claude-plugin/evals.md`, `docs/llm-evals-changelog.md` |
-| Claude Code | the plugin pages under `docs/claude-plugin/` (minus `evals.md`), `claude-code-for-data-science.md`, `ai-ready.md` |
+| oryxflow | `index.md` (the home page, `/`, labelled "oryxflow"), `docs/index.md` (Overview), why, installation, quickstart, Guide (incl. `docs/collaborate.md`, the export/import page), Advanced, Example (ML), a "Claude Code plugin" section (the plugin pages under `docs/claude-plugin/` minus `evals.md`, `claude-code-for-data-science.md`, `ai-ready.md`), glossary, supply chain, API reference, changelog |
+| oryxeval | the landing `docs/docs/oryxeval.md` (`/docs/oryxeval/`), the five `docs/llm-evals*.md` pages, `docs/claude-plugin/evals.md` ("Claude Code plugin"), `docs/llm-evals-changelog.md` |
 | Blog | `blog/index.md` |
 
-The `llmstxt` `sections` mirror the tabs one to one (Blog last): a new page goes in both `nav`
+There is no Home, Knowledge or Claude Code tab. `/docs/oryxflow/` is an alias of `/`: a 301 in
+`docs/_redirects` on Cloudflare, plus the stub `docs/docs/oryxflow.md` (front matter
+`template: redirect.html`, see `overrides/redirect.html`) for `zensical serve`. The stub is not in
+the nav, search, llms.txt or sitemap (`stamp_lastmod.py` drops it) and `check_seo.py` skips it.
+
+The `llmstxt` `sections` mirror the tabs (the oryxflow plugin pages are their own "oryxflow Claude Code plugin" section; Blog last): a new page goes in both `nav`
 and `sections`.
 
 ## Layout

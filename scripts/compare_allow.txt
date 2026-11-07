@@ -22,7 +22,7 @@ llms-url:https://docs.oryxflow.dev/docs/llm-evals-changelog/index.md
 # llms.txt; the per-tab sections now include it (a fix).
 llms-url:https://docs.oryxflow.dev/docs/example-ml/index.md
 
-# llms.txt sections now mirror the product tabs (oryxflow, Knowledge, oryxeval, Claude Code, Blog)
+# llms.txt sections now mirror the product tabs (oryxflow, oryxflow Claude Code plugin, oryxeval, Blog)
 # instead of the old Getting started / Guide / Advanced / ... headings. Intended restructure.
 llms-sections
 
@@ -115,3 +115,21 @@ title:blog/archive/2026/page/2/index.html
 title:blog/archive/2026/page/3/index.html
 title:blog/page/2/index.html
 title:blog/page/3/index.html
+
+# New page: the oryxeval landing (/docs/oryxeval/), the first page of the oryxeval tab.
+docs/oryxeval/index.html
+sitemap-loc:https://docs.oryxflow.dev/docs/oryxeval/
+llms-url:https://docs.oryxflow.dev/docs/oryxeval/index.md
+
+# New page: /docs/oryxflow/ is a meta-refresh stub (noindex, canonical to /) so the alias also
+# works under `zensical serve`; it is kept out of the sitemap, llms.txt and the SEO checks.
+docs/oryxflow/index.html
+
+# The "oryxflow is the home tab" restructure appends the alias rules to _redirects; the existing
+# rule is unchanged (checked: only added lines are accepted, nothing may be removed or edited).
+redirects-added:/docs/oryxflow/ / 301
+redirects-added:/docs/oryxflow / 301
+
+# The page's nav label is now "Share between projects (export/import)" (it moved from the
+# Knowledge tab into the oryxflow Guide); the page title follows the nav label. URL and headings unchanged.
+title:docs/collaborate/index.html

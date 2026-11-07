@@ -13,3 +13,9 @@
 # competing for one phrase. The sibling keeps the DataFrame-caching phrase; this
 # post moved to the framing its own H1 already owned.
 /blog/caching/cache-intermediate-dataframes-python/ /blog/caching/stop-rerunning-your-pipeline/ 301
+
+# 2026-11-07: oryxflow is the site home (/). /docs/oryxflow/ is an alias of it. Cloudflare applies
+# this before static files; docs/docs/oryxflow.md is the stub that does the same under
+# `zensical serve` (meta refresh, noindex, canonical to /).
+/docs/oryxflow/ / 301
+/docs/oryxflow / 301

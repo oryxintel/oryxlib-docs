@@ -1,0 +1,18 @@
+{#- Minimal redirect stub for pages whose front matter says `template: redirect.html`
+    (docs/docs/oryxflow.md -> /). Standalone on purpose: no theme chrome, no JSON-LD, no
+    Open Graph. Cloudflare answers the same URL with a 301 from docs/_redirects before
+    this file is ever served; this page is for `zensical serve` and any host without it.
+    check_seo.py skips it (meta refresh + noindex); stamp_lastmod.py keeps it out of the sitemap. -#}
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Redirecting to oryxflow</title>
+  <meta name="robots" content="noindex">
+  <link rel="canonical" href="{{ config.site_url }}">
+  <meta http-equiv="refresh" content="0; url=/">
+</head>
+<body>
+  <p>Redirecting to <a href="/">oryxflow</a>.</p>
+</body>
+</html>

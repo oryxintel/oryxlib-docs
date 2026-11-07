@@ -48,9 +48,9 @@ oryxflow-docs-graph.png
 """
 
 nav = [
-    { "Home" = "index.md" },
     { "oryxflow" = [
-        "docs/index.md",
+        { "oryxflow" = "index.md" },
+        { "Overview" = "docs/index.md" },
         { "Why oryxflow" = "docs/why-oryxflow.md" },
         { "Installation" = "docs/installation.md" },
         { "Quickstart" = "docs/quickstart.md" },
@@ -61,6 +61,7 @@ nav = [
             { "Workflows" = "docs/workflow.md" },
             { "Running workflows" = "docs/run.md" },
             { "Task I/O formats" = "docs/targets.md" },
+            { "Share between projects (export/import)" = "docs/collaborate.md" },
             { "Reports from notebooks" = "docs/reports.md" },
             { "Logging" = "docs/logging.md" },
             { "Managing complex workflows" = "docs/managing-workflows.md" },
@@ -72,32 +73,30 @@ nav = [
             { "Functional API" = "docs/functional_tasks.md" },
         ] },
         { "Example (ML)" = "docs/example-ml.md" },
+        { "Claude Code plugin" = [
+            { "Claude Code for data science" = "docs/claude-code-for-data-science.md" },
+            { "Built for AI coding agents" = "docs/ai-ready.md" },
+            "docs/claude-plugin/index.md",
+            { "Trustworthy AI data analysis" = "docs/claude-plugin/trust.md" },
+            { "Commands" = "docs/claude-plugin/commands.md" },
+            { "Data-science project structure" = "docs/claude-plugin/project-structure.md" },
+            { "Stop AI data analysis turning into a mess" = "docs/claude-plugin/coding-standards.md" },
+            { "Why library + plugin" = "docs/claude-plugin/why.md" },
+        ] },
         { "Glossary" = "docs/glossary.md" },
         { "Security & supply chain" = "docs/supply-chain.md" },
         { "API Reference" = "docs/reference.md" },
         { "Changelog" = "docs/changelog.md" },
     ] },
-    { "Knowledge" = [
-        { "Collaborate & share flows" = "docs/collaborate.md" },
-    ] },
     { "oryxeval" = [
+        { "oryxeval" = "docs/oryxeval.md" },
         { "Quickstart" = "docs/llm-evals-quickstart.md" },
         { "Guide" = "docs/llm-evals.md" },
         { "Prompt files" = "docs/llm-evals-prompts.md" },
         { "Classes and functions" = "docs/llm-evals-api.md" },
         { "What a plan must contain" = "docs/llm-evals-checklist.md" },
-        { "Scaffold with Claude Code" = "docs/claude-plugin/evals.md" },
+        { "Claude Code plugin" = "docs/claude-plugin/evals.md" },
         { "Changelog" = "docs/llm-evals-changelog.md" },
-    ] },
-    { "Claude Code" = [
-        { "Claude Code for data science" = "docs/claude-code-for-data-science.md" },
-        { "Built for AI coding agents" = "docs/ai-ready.md" },
-        "docs/claude-plugin/index.md",
-        { "Trustworthy AI data analysis" = "docs/claude-plugin/trust.md" },
-        { "Commands" = "docs/claude-plugin/commands.md" },
-        { "Data-science project structure" = "docs/claude-plugin/project-structure.md" },
-        { "Stop AI data analysis turning into a mess" = "docs/claude-plugin/coding-standards.md" },
-        { "Why library + plugin" = "docs/claude-plugin/why.md" },
     ] },
     { "Blog" = [
         "blog/index.md",
@@ -238,6 +237,7 @@ exists, and reruns exactly what a parameter, data, or code change affects."""
     "docs/workflow.md",
     "docs/run.md",
     "docs/targets.md",
+    "docs/collaborate.md",
     "docs/reports.md",
     "docs/logging.md",
     "docs/managing-workflows.md",
@@ -251,19 +251,7 @@ exists, and reruns exactly what a parameter, data, or code change affects."""
     "docs/reference.md",
     "docs/changelog.md",
 ]
-"Knowledge" = [
-    "docs/collaborate.md",
-]
-"oryxeval" = [
-    "docs/llm-evals-quickstart.md",
-    "docs/llm-evals.md",
-    "docs/llm-evals-prompts.md",
-    "docs/llm-evals-api.md",
-    "docs/llm-evals-checklist.md",
-    "docs/claude-plugin/evals.md",
-    "docs/llm-evals-changelog.md",
-]
-"Claude Code" = [
+"oryxflow Claude Code plugin" = [
     "docs/claude-code-for-data-science.md",
     "docs/ai-ready.md",
     "docs/claude-plugin/index.md",
@@ -272,6 +260,16 @@ exists, and reruns exactly what a parameter, data, or code change affects."""
     "docs/claude-plugin/project-structure.md",
     "docs/claude-plugin/coding-standards.md",
     "docs/claude-plugin/why.md",
+]
+"oryxeval" = [
+    "docs/oryxeval.md",
+    "docs/llm-evals-quickstart.md",
+    "docs/llm-evals.md",
+    "docs/llm-evals-prompts.md",
+    "docs/llm-evals-api.md",
+    "docs/llm-evals-checklist.md",
+    "docs/claude-plugin/evals.md",
+    "docs/llm-evals-changelog.md",
 ]
 "Blog" = [
     "blog/index.md",

@@ -5,7 +5,8 @@ MkDocs got these from mkdocs-git-revision-date-localized; Zensical has no equiva
 after `zensical build` this maps every docs source file to its page URL and writes the
 date of the file's last git commit (`git log -1 --format=%cs`) into
 
-  * site/sitemap.xml: a <lastmod> after each matching <loc>
+  * site/sitemap.xml: a <lastmod> after each matching <loc>; the <url> entries of redirect
+    stubs (front matter `template: redirect.html`) are dropped (Zensical has no sitemap exclude)
   * site/<page>/index.html: "dateModified" on the page's JSON-LD article node
     (TechArticle / BlogPosting; the home page's SoftwareApplication), and an
     <meta property="article:modified_time"> after the page's og:type=article tag
@@ -165,8 +166,30 @@ def dates_by_url(docs_dir: Path) -> PageDates:
     return PageDates(out, posts)
 
 
+_URL_RE = re.compile(r"[ \t]*<url>.*?</url>[ \t]*\r?\n?", re.DOTALL)
+
+
+def redirect_stub_urls(docs_dir: Path) -> set:
+    """URL paths of pages whose front matter says `template: redirect.html` (alias stubs)."""
+    docs_dir = Path(docs_dir).resolve()
+    return {u for md in docs_dir.rglob("*.md")
+            if _front_matter(md).get("template") == "redirect.html"
+            and (u := url_for_source(md, docs_dir)) is not None}
+
+
+def drop_stub_urls(sitemap_text: str, stubs: set) -> str:
+    """Remove the <url> entries whose <loc> path is one of the stub URLs."""
+    def repl(m):
+        loc = _LOC_RE.search(m.group(0))
+        path = urlparse(html.unescape(loc.group(2)).strip()).path.lstrip("/") if loc else None
+        return "" if path in stubs else m.group(0)
+    return _URL_RE.sub(repl, sitemap_text) if stubs else sitemap_text
+
+
 def stamp_lastmod(site: Path, docs_dir: Path) -> int:
-    """Add <lastmod> after each sitemap <loc> whose page has a git date; return the count."""
+    """Add <lastmod> after each sitemap <loc> whose page has a git date; return the count.
+
+    Also drops the sitemap entries of redirect stubs."""
     sitemap = Path(site) / "sitemap.xml"
     dates = dates_by_url(docs_dir)
     n = 0
@@ -180,7 +203,7 @@ def stamp_lastmod(site: Path, docs_dir: Path) -> int:
         n += 1
         return f"{m.group(0)}\n{m.group(1)}<lastmod>{d}</lastmod>"
 
-    text = sitemap.read_text(encoding="utf-8")
+    text = drop_stub_urls(sitemap.read_text(encoding="utf-8"), redirect_stub_urls(docs_dir))
     sitemap.write_text(_LOC_RE.sub(repl, text), encoding="utf-8")
     return n
 

@@ -77,3 +77,12 @@ def test_length_outside_range_only_warns(tmp_path):
     assert any("long/index.html" in w and "161 chars" in w for w in warnings)
     assert any("title/index.html" in w and "title is 66 chars" in w for w in warnings)
     assert seo.main([str(site)]) == 0
+
+
+def test_meta_refresh_stub_is_excluded(tmp_path):
+    stub = ('<!doctype html><html><head><title>Redirecting</title><meta name="robots" content="noindex">'
+            '<meta http-equiv="refresh" content="0; url=/"></head><body></body></html>')
+    (tmp_path / "docs" / "alias").mkdir(parents=True)
+    (tmp_path / "docs" / "alias" / "index.html").write_text(stub, encoding="utf-8")
+    errors, _ = seo.check_site(tmp_path)
+    assert errors == []
