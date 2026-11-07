@@ -6,7 +6,8 @@ on my machine" and "it built in the Action" run the exact same steps.
 
 Steps:
   0. Copy the oryxflow and oryxeval changelogs from the sibling checkouts into
-     _external/ (the changelog page includes the oryxflow one by snippet).
+     _external/ (the changelog pages include them by snippet). With --offline the
+     committed _external/ snapshots are used instead and no sibling is read.
   1. Validate every page's YAML front matter — invalid front matter is not an error in
      MkDocs, it just gets rendered as page text, so the build has to catch it.
   2. Compile the runnable Markdown pages into tests/test_docs_*.py with phmdoctest.
@@ -22,6 +23,9 @@ Usage:
     python scripts/build_docs.py --strict       # zensical build --strict
     python scripts/build_docs.py --src-root DIR # where oryxflow/ and oryxeval/ live
                                                 #   (default: $ORYX_SRC_ROOT, else ..)
+    python scripts/build_docs.py --offline      # no siblings: committed _external/ snapshots
+                                                #   (what Cloudflare runs)
+    python scripts/build_docs.py --use-snapshot oryxeval   # snapshot for that repo only (CI)
     python scripts/build_docs.py --regen        # front matter + regenerate tests only,
                                                 #   no pytest, no build (pre-commit hook)
 
@@ -49,7 +53,7 @@ EXTERNAL_REPOS = ("oryxflow", "oryxeval")
 
 # Markdown pages that run top-to-bottom and are compiled into pytest files by phmdoctest.
 # Add a page here (and mark its runnable code blocks with <!--phmdoctest-share-names-->)
-# to have its examples verified on every build. See docs/CLAUDE.md.
+# to have its examples verified on every build. See CLAUDE.md.
 TESTED_PAGES = {
     "docs/docs/quickstart.md": "tests/test_docs_quickstart.py",
     "docs/docs/targets.md": "tests/test_docs_targets.py",
@@ -57,17 +61,31 @@ TESTED_PAGES = {
 }
 
 
-def fetch_sources(src_root: Path, dest: Path) -> None:
-    """Copy each sibling repo's CHANGELOG.md into dest/<repo>/CHANGELOG.md."""
+def fetch_sources(src_root: Path, dest: Path, snapshot=()) -> None:
+    """Make dest/<repo>/CHANGELOG.md available for every repo in EXTERNAL_REPOS.
+
+    Repos named in `snapshot` are NOT read from src_root: the committed copy already in
+    dest is used (it must exist). All others are copied from the sibling checkout.
+    """
     src_root, dest = Path(src_root), Path(dest)
-    missing = [r for r in EXTERNAL_REPOS if not (src_root / r / "CHANGELOG.md").is_file()]
+    unknown = [r for r in snapshot if r not in EXTERNAL_REPOS]
+    if unknown:
+        sys.exit(f"ERROR: unknown repo for snapshot mode: {', '.join(unknown)} "
+                 f"(known: {', '.join(EXTERNAL_REPOS)}).")
+    no_snap = [r for r in snapshot if not (dest / r / "CHANGELOG.md").is_file()]
+    if no_snap:
+        sys.exit(f"ERROR: no committed snapshot _external/{no_snap[0]}/CHANGELOG.md for "
+                 f"{', '.join(no_snap)}. Run scripts/sync_release.py with the sibling "
+                 "checkouts present, then commit _external/.")
+    live = [r for r in EXTERNAL_REPOS if r not in snapshot]
+    missing = [r for r in live if not (src_root / r / "CHANGELOG.md").is_file()]
     if missing:
         sys.exit(
             f"ERROR: cannot find CHANGELOG.md for {', '.join(missing)} under {src_root}.\n"
             "       Check out the sibling repos next to this one, or pass --src-root DIR "
-            "(or set ORYX_SRC_ROOT)."
+            "(or set ORYX_SRC_ROOT); --use-snapshot REPO uses the committed copy instead."
         )
-    for repo in EXTERNAL_REPOS:
+    for repo in live:
         out = dest / repo
         out.mkdir(parents=True, exist_ok=True)
         shutil.copyfile(src_root / repo / "CHANGELOG.md", out / "CHANGELOG.md")
@@ -138,7 +156,7 @@ def check_installed_version(changelog: Path, installed: str) -> None:
         sys.exit(
             f"ERROR: installed oryxflow {installed} is older than the newest release {newest} "
             "in its CHANGELOG.md, so the API page would document an older oryxflow.\n"
-            "       Reinstall from the sibling checkout: pip install ../oryxflow"
+            "       Reinstall: pip install ../oryxflow (or run scripts/sync_release.py, then\n       pip install -r docs/requirements-cloudflare.txt)"
         )
     print(f"oryxflow installed {installed}; newest changelog release {newest}", flush=True)
 
@@ -183,6 +201,13 @@ def main():
     ap.add_argument("--src-root", type=Path, default=Path(os.environ.get("ORYX_SRC_ROOT", "..")),
                     help="folder holding the oryxflow/ and oryxeval/ checkouts "
                          "(default: $ORYX_SRC_ROOT, else ..)")
+    ap.add_argument("--offline", action="store_true",
+                    help="do not read sibling checkouts: use the committed _external/ snapshots "
+                         "(the Cloudflare build)")
+    ap.add_argument("--use-snapshot", action="append", default=[], metavar="REPO",
+                    choices=EXTERNAL_REPOS,
+                    help="use the committed snapshot for this repo only (repeatable); "
+                         "CI uses it for oryxeval, which has no GitHub remote yet")
     ap.add_argument("--regen", action="store_true",
                     help="only validate front matter and regenerate doc tests (pre-commit hook)")
     args = ap.parse_args()
@@ -200,8 +225,9 @@ def main():
         generate(check=False)
         return
 
-    # Build path only: needs the sibling checkouts (the --regen hook does not).
-    fetch_sources(src_root, ROOT / "_external")
+    # Build path only: needs the sibling checkouts unless --offline / --use-snapshot.
+    snapshot = EXTERNAL_REPOS if args.offline else tuple(args.use_snapshot)
+    fetch_sources(src_root, ROOT / "_external", snapshot=snapshot)
     import oryxflow
 
     check_installed_version(ROOT / "_external" / "oryxflow" / "CHANGELOG.md", oryxflow.__version__)

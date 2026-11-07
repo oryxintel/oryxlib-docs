@@ -1,5 +1,4 @@
 site/
-_external/
 __pycache__/
 .ipynb_checkpoints/
 docs/data/

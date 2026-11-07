@@ -2,7 +2,7 @@
 #
 # Build:   python scripts/build_docs.py   # fetch sources, doc tests, zensical build into ./site
 #          zensical serve                 # live preview at http://127.0.0.1:8000
-# Deps:    pip install -r docs/requirements-docs.txt
+# Deps:    pip install ../oryxflow -r docs/requirements-docs.txt
 
 [project]
 # site_url is the CANONICAL origin. The docs live on the docs.oryxflow.dev subdomain (not
@@ -37,7 +37,6 @@ extra_javascript = ["assets/extra.js"]
 # Everything under docs/ that is NOT part of the published site. gitignore syntax.
 # (Internal design notes, notebooks, loose example scripts, build junk.)
 exclude_docs = """
-CLAUDE.md
 todo/
 system/
 _build/

@@ -81,3 +81,40 @@ def test_numeric_not_string_version_compare(tmp_path):
 def test_current_or_newer_install_ok(tmp_path):
     bd.check_installed_version(_changelog(tmp_path), "26.11.6")
     bd.check_installed_version(_changelog(tmp_path), "26.12.1")
+
+
+# --- snapshot / offline mode -------------------------------------------------------------
+
+def _make_snapshots(dest: Path, repos=("oryxflow", "oryxeval")):
+    for repo in repos:
+        (dest / repo).mkdir(parents=True, exist_ok=True)
+        (dest / repo / "CHANGELOG.md").write_text("snap\n", encoding="utf-8")
+
+
+def test_snapshot_repo_is_not_fetched_from_siblings(tmp_path):
+    src, dest = tmp_path / "src", tmp_path / "_external"
+    _make_src(src, repos=("oryxflow",))  # oryxeval absent
+    _make_snapshots(dest)
+    bd.fetch_sources(src, dest, snapshot=("oryxeval",))
+    assert (dest / "oryxflow" / "CHANGELOG.md").read_text(encoding="utf-8").startswith("# Changelog")
+    assert (dest / "oryxeval" / "CHANGELOG.md").read_text(encoding="utf-8") == "snap\n"
+
+
+def test_offline_never_reads_siblings(tmp_path):
+    dest = tmp_path / "_external"
+    _make_snapshots(dest)
+    bd.fetch_sources(tmp_path / "does-not-exist", dest, snapshot=bd.EXTERNAL_REPOS)
+    assert (dest / "oryxflow" / "CHANGELOG.md").read_text(encoding="utf-8") == "snap\n"
+
+
+def test_missing_snapshot_fails_clearly(tmp_path):
+    dest = tmp_path / "_external"
+    _make_snapshots(dest, repos=("oryxflow",))
+    with pytest.raises(SystemExit) as exc:
+        bd.fetch_sources(tmp_path, dest, snapshot=bd.EXTERNAL_REPOS)
+    assert "oryxeval" in str(exc.value) and "snapshot" in str(exc.value)
+
+
+def test_unknown_snapshot_repo_rejected(tmp_path):
+    with pytest.raises(SystemExit):
+        bd.fetch_sources(tmp_path, tmp_path / "_external", snapshot=("nope",))

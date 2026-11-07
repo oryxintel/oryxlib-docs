@@ -1,4 +1,4 @@
-# Pre-commit hooks for the oryxflow repo.
+# Pre-commit hooks for the oryxlib-docs repo.
 #
 # One-time setup after cloning:
 #     pip install pre-commit && pre-commit install

@@ -1,28 +1,20 @@
 name: Docs
 
-# Build the MkDocs site and run the documentation-example tests. This validates that the
-# docs build and that every runnable example still works; it does NOT deploy. Deployment is
-# handled by Cloudflare Pages' Git integration (it builds and publishes ./site on every push
-# to main). Runs on pushes to main and on PRs that touch the docs, the library, or this
-# workflow; can also be triggered by hand.
+# Build the Zensical site and run the documentation-example tests. This validates that the
+# docs build and that every runnable example still works. It does NOT deploy: Cloudflare
+# Pages builds this repo from Git on every push to main (see README.md).
+#
+# The default (fetching) build runs against oryxflow main, so a library change that breaks
+# the docs is caught, including by the nightly schedule. The oryxeval repo has no GitHub
+# remote yet, so its changelog comes from the committed _external/ snapshot
+# (--use-snapshot oryxeval). Once the repo exists: add a checkout step and drop the flag.
 
 on:
   push:
     branches: [main]
-    paths:
-      - 'docs/**'
-      - 'zensical.toml'
-      - 'oryxflow/**'
-      - 'scripts/build_docs.py'
-      - 'docs/requirements-docs.txt'
-      - '.github/workflows/docs.yml'
   pull_request:
-    paths:
-      - 'docs/**'
-      - 'zensical.toml'
-      - 'oryxflow/**'
-      - 'scripts/build_docs.py'
-      - 'docs/requirements-docs.txt'
+  schedule:
+    - cron: '17 4 * * *'
   workflow_dispatch:
 
 permissions:
@@ -32,11 +24,16 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
+      # Siblings in the workspace: oryxlib-docs/ and oryxflow/ next to each other.
       - uses: actions/checkout@v7
         with:
-          # Full history so mkdocs-git-revision-date-localized stamps real commit dates
-          # (and correct sitemap <lastmod>) instead of the CI build time.
-          fetch-depth: 0
+          path: oryxlib-docs
+          fetch-depth: 0   # real commit dates for sitemap lastmod / dateModified
+
+      - uses: actions/checkout@v7
+        with:
+          repository: oryxintel/oryxflow
+          path: oryxflow
 
       - uses: actions/setup-python@v7
         with:
@@ -46,12 +43,8 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install -e .
-          pip install -r docs/requirements-docs.txt
+          pip install ./oryxflow -r oryxlib-docs/docs/requirements-docs.txt
 
       - name: Build docs + run doc-example tests
-        # Regenerates the doc tests fresh, runs them (red if an example rotted), then
-        # `mkdocs build` (red if the site — i.e. the Cloudflare Pages build — would break).
-        # No --check: staleness of the committed tests/test_docs_*.py is bookkeeping, not a
-        # real failure, so we don't gate CI on it.
-        run: python scripts/build_docs.py
+        working-directory: oryxlib-docs
+        run: python scripts/build_docs.py --src-root .. --use-snapshot oryxeval

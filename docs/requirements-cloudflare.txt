@@ -1,0 +1,4 @@
+-r requirements-docs.txt
+# The Cloudflare build installs the released oryxflow from PyPI (no sibling checkout).
+# scripts/sync_release.py rewrites this pin to the newest release in the oryxflow CHANGELOG.
+oryxflow==26.11.6
