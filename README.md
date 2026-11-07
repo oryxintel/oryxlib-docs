@@ -1,7 +1,7 @@
 # oryxlib-docs
 
-Source of [docs.oryxflow.dev](https://docs.oryxflow.dev): the oryxflow and oryxeval docs and the
-blog, built with [Zensical](https://zensical.org) from `zensical.toml`. Contributor and agent
+Source of [docs.oryxflow.dev](https://docs.oryxflow.dev): docs and blog for oryxflow and oryxeval
+(Python libraries and Claude Code plugins for trustworthy, accurate AI data analysis), built with [Zensical](https://zensical.org) from `zensical.toml`. Contributor and agent
 rules are in `CLAUDE.md`.
 
 ## Setup

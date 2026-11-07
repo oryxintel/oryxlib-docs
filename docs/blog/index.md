@@ -5,7 +5,7 @@ description: Articles on reproducible pipelines, data lineage, tool comparisons 
 
 # Blog
 
-Notes on making data analysis **trustworthy and reproducible** — for humans and AI coding
+Notes on making data analysis **trustworthy and accurate** — for humans and AI coding
 agents. Results you can believe, lineage that says which code and inputs made every number,
 honest tool comparisons — and, because nothing recomputes twice, a trustworthy path that also
 happens to be the fast, cheap one.

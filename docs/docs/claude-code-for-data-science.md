@@ -14,9 +14,9 @@ faq:
     a: "No, because it covers exploration too rather than demanding a pipeline upfront. Ask the agent to look at a new dataset and it writes a re-runnable read-only probe under eda/, documenting the question and recording anything it learns, instead of scattering one-off snippets. When a probe turns out to be load-bearing, /oryxflow:migrate lifts it into cached tasks. So you start with simple scripts and scale to any complexity later, with no rewrite in between."
 ---
 
-# Claude Code for data science: trustworthy, reproducible AI data analysis
+# Claude Code for data science: trustworthy, accurate AI data analysis
 
-**oryxflow makes AI data analysis trustworthy and reproducible.** It's a Claude Code plugin and
+**oryxflow makes AI data analysis trustworthy and accurate.** It's a Claude Code plugin and
 skill for data science, backed by a Python library, that teaches your coding agent to build the
 work as a pipeline instead of a pile of scripts. Three things follow, in the order they matter:
 

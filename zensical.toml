@@ -15,10 +15,8 @@
 # this as the production docs domain, not a deploy-preview URL.
 site_name = "oryxflow"
 site_url = "https://docs.oryxflow.dev/"
-site_description = """oryxflow is an open-source Python library and Claude Code plugin for trustworthy, reproducible \
-AI data analysis: no result is ever built on stale data, every result records the code and \
-inputs that made it, and because finished steps are never recomputed the trustworthy path is \
-also the fast, cheap one — lineage-tracked pipelines, local-first, no server or account."""
+site_description = """Python libraries and Claude Code plugins for trustworthy, accurate AI data analysis: \
+oryxflow for cached, lineage-tracked pipelines and oryxeval for LLM evals. Local-first, open source."""
 site_author = "Oryx Intelligence LLC"
 copyright = "Copyright &copy; 2026 Oryx Intelligence LLC"
 
@@ -222,7 +220,7 @@ filters = ["!^_"]
 # llmstxt must run last so it captures the final rendered pages.
 [project.plugins.llmstxt]
 full_output = "llms-full.txt"
-markdown_description = """oryxflow is a small, self-contained Python library for building data-science workflows: \
+markdown_description = """oryxflow is a small, self-contained Python library for trustworthy, accurate AI data analysis: \
 declare Task classes with parameters, dependencies (requires) and a run() that save()s \
 output; the engine runs the DAG in dependency order, skips tasks whose output already \
 exists, and reruns exactly what a parameter, data, or code change affects."""

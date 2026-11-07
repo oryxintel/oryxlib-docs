@@ -15,9 +15,9 @@ faq:
     a: "You don't need a task graph for a first look at a dataset — a quick CSV load, a group-by, one plot is fine as a plain script. You don't have to choose upfront, though: start there and run /oryxflow:migrate when the work gains depth, cost, or parameter combinations, and what you already wrote becomes cached tasks. oryxflow earns its keep the moment a stale early step can silently corrupt everything below it, an expensive step makes the edit-run loop painful, or you're sweeping an experiment matrix — which is also where hand-managed scripts and AI coding agents go wrong. It isn't a production orchestrator (use Airflow or Prefect) or an experiment dashboard (use MLflow or Weights & Biases); it composes beside both."
 ---
 
-# oryxflow: trustworthy, reproducible AI data analysis
+# oryxflow: trustworthy, accurate AI data analysis
 
-**Data analysis you can believe, and reproduce later — for humans and AI coding agents.**
+**Trustworthy, accurate data analysis you can reproduce later — for humans and AI coding agents.**
 oryxflow turns a data-science script into a pipeline where no result can quietly sit on stale
 data, and every result records the code and inputs that made it. Rigor like that normally costs
 you rerun time; here it doesn't, because nothing is ever computed twice. It's a Python library
@@ -32,7 +32,7 @@ The docs are [machine-readable too](docs/ai-ready.md) — point it at
 [`llms-full.txt`](https://docs.oryxflow.dev/llms-full.txt) and it has read all of oryxflow in one
 request.
 
-## Why oryxflow: trustworthy, reproducible data science
+## Why oryxflow: trustworthy, accurate data analysis
 
 Four things you get on day one — the full argument is in
 **[Why oryxflow](docs/why-oryxflow.md)**:

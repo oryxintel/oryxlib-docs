@@ -15,7 +15,7 @@ faq:
 # oryxflow is built for AI coding agents — documentation included
 
 Most libraries are documented for humans and then discovered by agents by accident. oryxflow is
-written for both — because trustworthy, reproducible AI data analysis depends as much on what the
+written for both — because trustworthy, accurate AI data analysis depends as much on what the
 agent can read as on what it can run. Two halves:
 
 - **The library** gives an agent the discipline it can't hold in its head — every step has an

@@ -16,9 +16,9 @@ faq:
     a: "Yes, and that's the recommended way in: start with plain exploratory scripts, then let the work grow into a pipeline. The Claude Code plugin gives exploration a home — read-only probes under eda/, with findings written up as you go — and when a probe turns out to be load-bearing, /oryxflow:migrate lifts what you already wrote into cached tasks. You get a first look at a dataset without ceremony and a reproducible pipeline once the analysis earns one, with no rewrite in between."
 ---
 
-# Why oryxflow: trustworthy, reproducible data science
+# Why oryxflow: trustworthy, accurate data analysis
 
-**oryxflow makes data-science work trustworthy and reproducible** — it turns an analysis script
+**oryxflow makes data analysis trustworthy and accurate** — it turns an analysis script
 into a pipeline where no result can quietly sit on stale data, and every result records the code
 and inputs that made it, so you can regenerate it later. Being that careful normally costs you
 rerun time; here it doesn't, because nothing is ever computed twice. It's a pip-installable Python
@@ -48,7 +48,7 @@ erode trust in the result long before anyone questions the math:
 None of these are math errors. They're **trust** errors — in the mechanics of the pipeline. And
 they get worse, not better, as an AI agent writes more of the code.
 
-## What oryxflow gives you: trustworthy, reproducible data science
+## What oryxflow gives you: trustworthy, accurate data analysis
 
 - **Reruns exactly what changed.** Change a parameter, a data input, or a task's code and exactly
   the affected outputs rebuild — you can't accidentally evaluate a new model on old features, so a
