@@ -150,4 +150,4 @@ Notice that `GetDiabetes` runs only once even though two models are trained — 
 - [Running Workflows](run.md) — previewing, running, and resetting tasks.
 - [Managing Complex Workflows](managing-workflows.md#managing-complex-workflows) — caching expensive granular work and resetting it selectively as you iterate.
 
-The ML example is in the repo as a runnable script, [example-ml-compare.py](https://github.com/oryxintel/oryxflow/blob/main/docs/example-ml-compare.py), and as a [notebook](https://github.com/oryxintel/oryxflow/blob/main/docs/example.ipynb). To scaffold a full real-life project layout — tasks, parameters, flow, config, and the supporting folders — run [`/oryxflow:init-project`](claude-plugin/commands.md) in Claude Code.
+The ML example is in the repo as a runnable script, [example-ml-compare.py](https://github.com/oryxintel/oryxlib-docs/blob/main/docs/example-ml-compare.py), and as a [notebook](https://github.com/oryxintel/oryxlib-docs/blob/main/docs/example.ipynb). To scaffold a full real-life project layout — tasks, parameters, flow, config, and the supporting folders — run [`/oryxflow:init-project`](claude-plugin/commands.md) in Claude Code.

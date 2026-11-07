@@ -11,7 +11,7 @@ In this example you will:
 * Intelligently rerun workflow after changing a preprocessing parameter
 
 Code is below, and it's also in the repo as a runnable script:
-**[example-ml-compare.py](https://github.com/oryxintel/oryxflow/blob/main/docs/example-ml-compare.py)**.
+**[example-ml-compare.py](https://github.com/oryxintel/oryxlib-docs/blob/main/docs/example-ml-compare.py)**.
 
 ## Workflow
 
