@@ -132,6 +132,8 @@ Pinned and automatic tasks mix freely in one pipeline, and a pinned task still r
 
     **After upgrading oryxflow.** Your tasks' records are checked against your code exactly as before, so an edit you made before or after the upgrade still reruns the task. The one exception is a record that can't be compared: one written by a much older oryxflow, or by another Python version under oryxflow 26.10.21 or earlier. Such a task is kept, and the run warns once, naming every one (`kept without rerunning: ...`; `oryxflow.events.print_status()` lists them too). If you edited one of them since its last run, `flow.reset(<Task>)` it.
 
+    **"changed in the same second as its last compile".** You edited a task file twice within one second without changing its size (`FACTOR = 1` to `FACTOR = 2`), so Python may have run the previous version of your code. The run says so, and the next run redoes the task, and everything after it, with your current code. Nothing to do; just run again.
+
 ## When your task depends on something that isn't Python
 
 Automatic tracking follows your Python, so it can't see the `.sql` file you execute, the prompt template you render, or the `.yaml` config you load — change one of those and the task happily serves its old output. Rather than remembering to `reset()` every time, **declare `code_version` as a method** and return whatever actually determines the result. Whatever it returns becomes part of that task's code identity: when the value changes, the task and everything downstream recompute on the next run, exactly as a logic edit would.
@@ -312,6 +314,15 @@ Add `.oryxflow/` to your `.gitignore` — run records are high-frequency exhaust
 ## Where the freshness records live
 
 The code fingerprints live in one small JSON file per data directory (`<dirpath>/.oryxflow-code-status.json`). It describes those exact artifacts, so **move or restore a data directory whole** — file and artifacts together, always via the same channel. An artifact without a record is simply treated as current (the same trust level every file has today); partial restores are on you. Correctness depends only on this file, never on the event log.
+
+## Moving or syncing a data folder between machines
+
+You can copy, zip or sync a project's data folder (with its `.oryxflow-code-status.json`) to another machine, a network share or a cloud drive. Tasks whose outputs are current stay complete there and won't rerun. oryxflow recognises inputs by what they contain, not by file times, which copies and syncs often change.
+
+- An input oryxflow tracks is recognised by the run that built it, recorded in the status file. Keep that file next to the data.
+- An input oryxflow doesn't track (`settings.code_version_auto = False` and no `code_version`, or a task imported from a project that doesn't track its code) is recognised by the content of its output files. The first check in each Python session reads those files once. Rewriting them with identical bytes reruns nothing; changing them reruns the tasks that read them on the next run.
+- Run each data folder with the same oryxflow version on every machine.
+- If something reruns unexpectedly, `RunResult.reasons` says why, e.g. `upstream output changed since last run: rewritten <task>`.
 
 ## What caching does *not* protect against
 
