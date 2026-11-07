@@ -15,6 +15,16 @@
 -#}
 {% extends "base.html" %}
 
+{#- Home page <title> is the bare site name, as on the MkDocs site: Zensical would render
+    "Home - oryxflow" from the nav label, and the home title is the one search results show most. -#}
+{% block htmltitle %}
+  {%- if page and (page.is_homepage or page.url in ('', './', '/')) -%}
+  <title>{{ config.site_name }}</title>
+  {%- else -%}
+  {{ super() }}
+  {%- endif -%}
+{% endblock %}
+
 {% block extrahead %}
   {{ super() }}
   {#- Start the body-text font downloading immediately. It's declared in extra.css,
