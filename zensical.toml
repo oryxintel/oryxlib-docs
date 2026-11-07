@@ -1,0 +1,279 @@
+# zensical.toml - oryxflow documentation site (built with Zensical)
+#
+# Build:   python scripts/build_docs.py   # fetch sources, doc tests, zensical build into ./site
+#          zensical serve                 # live preview at http://127.0.0.1:8000
+# Deps:    pip install -r docs/requirements-docs.txt
+
+[project]
+# site_url is the CANONICAL origin. The docs live on the docs.oryxflow.dev subdomain (not
+# the apex) on purpose: it's the stable, long-lived home for documentation, insulated from
+# whatever the apex oryxflow.dev becomes later (e.g. a marketing site or a blog re-platformed)
+# - so links into the docs never break. The docs are also reachable via the
+# *.pages.dev Cloudflare preview and GitHub, but docs.oryxflow.dev is canonical: the theme
+# stamps <link rel="canonical"> from this value, and sitemap.xml <loc> and the llms.txt URLs
+# are built from it - so every copy points search engines and AI crawlers back to it. Keep
+# this as the production docs domain, not a deploy-preview URL.
+site_name = "oryxflow"
+site_url = "https://docs.oryxflow.dev/"
+site_description = """oryxflow is an open-source Python library and Claude Code plugin for trustworthy, reproducible \
+AI data analysis: no result is ever built on stale data, every result records the code and \
+inputs that made it, and because finished steps are never recomputed the trustworthy path is \
+also the fast, cheap one — lineage-tracked pipelines, local-first, no server or account."""
+site_author = "Oryx Intelligence LLC"
+copyright = "Copyright &copy; 2026 Oryx Intelligence LLC"
+
+repo_url = "https://github.com/oryxintel/oryxflow"
+repo_name = "oryxintel/oryxflow"
+edit_uri = "edit/main/docs/"
+
+docs_dir = "docs"
+
+extra_css = ["assets/extra.css"]
+
+# Turns the "oryxflow" wordmark in the top banner and the sidebar heading into
+# links home - the theme renders both as dead text. See the file's comment.
+extra_javascript = ["assets/extra.js"]
+
+# Everything under docs/ that is NOT part of the published site. gitignore syntax.
+# (Internal design notes, notebooks, loose example scripts, build junk.)
+exclude_docs = """
+CLAUDE.md
+todo/
+system/
+_build/
+__pycache__/
+.ipynb_checkpoints/
+data/
+*.py
+*.ipynb
+*.sh
+oryxflow-docs-graph.png
+"""
+
+nav = [
+    { "Home" = "index.md" },
+    { "Docs" = [
+        "docs/index.md",
+        { "Why oryxflow" = "docs/why-oryxflow.md" },
+        { "Installation" = "docs/installation.md" },
+        { "Quickstart" = "docs/quickstart.md" },
+        { "Guide" = [
+            { "Transition from scripts" = "docs/transition.md" },
+            { "Migrate a messy notebook project" = "docs/migrate-notebook-to-pipeline.md" },
+            { "Writing and managing tasks" = "docs/tasks.md" },
+            { "Workflows" = "docs/workflow.md" },
+            { "Running workflows" = "docs/run.md" },
+            { "Task I/O formats" = "docs/targets.md" },
+            { "Reports from notebooks" = "docs/reports.md" },
+            { "Logging" = "docs/logging.md" },
+            { "Collaborate & share flows" = "docs/collaborate.md" },
+            { "Managing complex workflows" = "docs/managing-workflows.md" },
+            { "Experiment tracking (MLflow, W&B)" = "docs/experiment-tracking.md" },
+        ] },
+        { "Advanced" = [
+            { "Dynamic workflow generation" = "docs/advtasksdyn.md" },
+            { "Parameters" = "docs/advparam.md" },
+            { "Functional API" = "docs/functional_tasks.md" },
+        ] },
+        { "LLM evals (oryxeval)" = [
+            { "Quickstart" = "docs/llm-evals-quickstart.md" },
+            { "Guide" = "docs/llm-evals.md" },
+            { "Prompt files" = "docs/llm-evals-prompts.md" },
+            { "Classes and functions" = "docs/llm-evals-api.md" },
+            { "What a plan must contain" = "docs/llm-evals-checklist.md" },
+            { "Scaffold with Claude Code" = "docs/claude-plugin/evals.md" },
+        ] },
+        { "Example (ML)" = "docs/example-ml.md" },
+        { "Glossary" = "docs/glossary.md" },
+        { "Security & supply chain" = "docs/supply-chain.md" },
+        { "API Reference" = "docs/reference.md" },
+        { "Changelog" = "docs/changelog.md" },
+    ] },
+    { "Build with Claude Code" = [
+        { "Claude Code for data science" = "docs/claude-code-for-data-science.md" },
+        { "Built for AI coding agents" = "docs/ai-ready.md" },
+        "docs/claude-plugin/index.md",
+        { "Trustworthy AI data analysis" = "docs/claude-plugin/trust.md" },
+        { "Commands" = "docs/claude-plugin/commands.md" },
+        { "Data-science project structure" = "docs/claude-plugin/project-structure.md" },
+        { "Stop AI data analysis turning into a mess" = "docs/claude-plugin/coding-standards.md" },
+        { "Why library + plugin" = "docs/claude-plugin/why.md" },
+    ] },
+    { "Blog" = [
+        "blog/index.md",
+    ] },]
+
+# Link validation: broken pages/anchors are reported (warnings; the build does not fail).
+# Zensical validates links and anchors only; the MkDocs omitted_files / absolute_links /
+# unrecognized_links checks have no Zensical equivalent.
+[project.validation]
+invalid_links = true
+invalid_link_anchors = true
+
+[project.theme]
+# Zensical's default is the new "modern" look; "classic" keeps the Material-for-MkDocs
+# appearance this site (and extra.css) was built against.
+variant = "classic"
+custom_dir = "overrides"
+logo = "assets/logo-oryx.png"
+favicon = "assets/favicon.ico"
+# Don't let the theme load Roboto from fonts.googleapis.com. That injected a
+# stylesheet from a second origin into the critical path (a DNS + TLS handshake
+# before any text could render), which is what Search Console flagged as slow.
+# The same fonts are self-hosted from assets/fonts/ and declared in
+# assets/extra.css, so they arrive on the connection the page already has open.
+# Turning this off also drops the theme's own :root font variables - extra.css
+# sets --md-text-font / --md-code-font in their place. Keep the two in sync.
+font = false
+features = [
+    "navigation.instant",
+    "navigation.tracking",
+    "navigation.sections",
+    "navigation.indexes",
+    "navigation.top",
+    "navigation.footer",
+    "toc.follow",
+    "content.code.copy",
+    "content.action.edit",
+    "search.suggest",
+    "search.highlight",
+]
+
+[project.theme.icon]
+repo = "fontawesome/brands/github"
+
+[[project.theme.palette]]
+media = "(prefers-color-scheme: light)"
+scheme = "default"
+primary = "black"          # black top nav banner
+accent = "blue"            # hover/active accent
+toggle = { icon = "material/weather-night", name = "Switch to dark mode" }
+
+[[project.theme.palette]]
+media = "(prefers-color-scheme: dark)"
+scheme = "slate"
+primary = "black"
+accent = "blue"
+toggle = { icon = "material/weather-sunny", name = "Switch to light mode" }
+
+[project.markdown_extensions.toc]
+permalink = true
+
+[project.markdown_extensions.admonition]
+[project.markdown_extensions.attr_list]
+[project.markdown_extensions.md_in_html]
+[project.markdown_extensions.tables]
+[project.markdown_extensions.footnotes]
+[project.markdown_extensions.def_list]
+[project.markdown_extensions.pymdownx.details]
+
+[project.markdown_extensions.pymdownx.highlight]
+anchor_linenums = true
+
+[project.markdown_extensions.pymdownx.inlinehilite]
+
+# Renders :material-*: / :fontawesome-*: icon shortcodes (used in the card grids)
+# as inline SVGs instead of literal text. (Dotted paths replace YAML's !!python/name.)
+[project.markdown_extensions.pymdownx.emoji]
+emoji_index = "material.extensions.emoji.twemoji"
+emoji_generator = "material.extensions.emoji.to_svg"
+
+[project.markdown_extensions.pymdownx.superfences]
+
+[project.markdown_extensions.pymdownx.tabbed]
+alternate_style = true
+
+[project.markdown_extensions.pymdownx.snippets]
+base_path = [".", "docs"]
+check_paths = true
+
+[project.plugins.search]
+
+[project.plugins.blog]
+blog_dir = "blog"
+# SEO-friendly permalinks: /blog/<category>/<slug> - no date in the URL (dates
+# signal staleness on evergreen posts; freshness comes from sitemap <lastmod>),
+# one topical category segment for topic-hub siloing, keyword-first slugs (set
+# per post via `slug:` in front-matter).
+post_url_format = "{categories}/{slug}"
+post_url_max_categories = 1
+# Every post must have a <!-- more --> excerpt marker, so the /blog/ index shows
+# teasers that link to each post, never the full bodies inline.
+post_excerpt = "required"
+post_readtime = true
+
+[project.plugins.mkdocstrings]
+default_handler = "python"
+
+# No `paths`: the API page documents the installed oryxflow package
+# (pip install ../oryxflow), which griffe finds on sys.path.
+[project.plugins.mkdocstrings.handlers.python.options]
+docstring_style = "google"
+show_root_heading = true
+show_source = true
+members_order = "source"
+separate_signature = true
+filters = ["!^_"]
+
+# llmstxt must run last so it captures the final rendered pages.
+[project.plugins.llmstxt]
+full_output = "llms-full.txt"
+markdown_description = """oryxflow is a small, self-contained Python library for building data-science workflows: \
+declare Task classes with parameters, dependencies (requires) and a run() that save()s \
+output; the engine runs the DAG in dependency order, skips tasks whose output already \
+exists, and reruns exactly what a parameter, data, or code change affects."""
+
+[project.plugins.llmstxt.sections]
+"Getting started" = [
+    "index.md",
+    "docs/index.md",
+    "docs/why-oryxflow.md",
+    "docs/installation.md",
+    "docs/quickstart.md",
+]
+"Guide" = [
+    "docs/transition.md",
+    "docs/migrate-notebook-to-pipeline.md",
+    "docs/tasks.md",
+    "docs/workflow.md",
+    "docs/run.md",
+    "docs/targets.md",
+    "docs/reports.md",
+    "docs/logging.md",
+    "docs/collaborate.md",
+    "docs/managing-workflows.md",
+    "docs/experiment-tracking.md",
+]
+"Advanced" = [
+    "docs/advtasksdyn.md",
+    "docs/advparam.md",
+    "docs/functional_tasks.md",
+]
+"LLM evals (oryxeval)" = [
+    "docs/llm-evals-quickstart.md",
+    "docs/llm-evals.md",
+    "docs/llm-evals-prompts.md",
+    "docs/llm-evals-api.md",
+    "docs/llm-evals-checklist.md",
+    "docs/claude-plugin/evals.md",
+]
+"Build with Claude Code" = [
+    "docs/claude-code-for-data-science.md",
+    "docs/ai-ready.md",
+    "docs/claude-plugin/index.md",
+    "docs/claude-plugin/trust.md",
+    "docs/claude-plugin/commands.md",
+    "docs/claude-plugin/project-structure.md",
+    "docs/claude-plugin/coding-standards.md",
+    "docs/claude-plugin/why.md",
+]
+"Reference" = [
+    "docs/glossary.md",
+    "docs/supply-chain.md",
+    "docs/reference.md",
+    "docs/changelog.md",
+]
+"Blog" = [
+    "blog/index.md",
+    "blog/posts/*.md",
+]

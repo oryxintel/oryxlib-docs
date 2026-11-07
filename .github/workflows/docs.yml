@@ -11,7 +11,7 @@ on:
     branches: [main]
     paths:
       - 'docs/**'
-      - 'mkdocs.yml'
+      - 'zensical.toml'
       - 'oryxflow/**'
       - 'scripts/build_docs.py'
       - 'docs/requirements-docs.txt'
@@ -19,7 +19,7 @@ on:
   pull_request:
     paths:
       - 'docs/**'
-      - 'mkdocs.yml'
+      - 'zensical.toml'
       - 'oryxflow/**'
       - 'scripts/build_docs.py'
       - 'docs/requirements-docs.txt'

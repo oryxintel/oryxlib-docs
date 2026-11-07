@@ -7,7 +7,7 @@ repo-root `CLAUDE.md`.
 ## What this is
 
 The docs are a **Material for MkDocs** site (markdown, not the old Sphinx/reStructuredText). The
-`mkdocs.yml` at the repo root is the single source of truth for theme, nav, plugins, and what is
+`zensical.toml` at the repo root is the single source of truth for theme, nav, plugins, and what is
 published. The old Sphinx tree (`docs/source/`, `docs/Makefile`, `docs/make.bat`,
 `docs/requirements.txt`) has been removed — edit the `.md` pages in `docs/` (landing + blog) and
 `docs/docs/` (the guide + reference).
@@ -19,7 +19,7 @@ URL layout: `/` = landing (`docs/index.md`), `/docs/*` = the guide + reference (
 live in the `docs/docs/` subfolder to get the `/docs/` prefix.
 
 ```
-mkdocs.yml                     # site config: theme (black header, blue links, logo), nav, plugins
+zensical.toml                 # site config: theme (black header, blue links, logo), nav, plugins
 overrides/sitemap.xml          # custom sitemap: <lastmod> from git commit dates, not build time
 docs/                          # docs_dir
   index.md                     # ROOT landing page  ->  /
@@ -38,7 +38,7 @@ docs/                          # docs_dir
   blog/
     index.md                   # blog landing (Material "blog" plugin)  ->  /blog/
     posts/*.md                 # one file per post; front-matter: date, slug, categories
-                               #   permalinks are /blog/<category>/<slug> (no date; see mkdocs.yml)
+                               #   permalinks are /blog/<category>/<slug> (no date; see zensical.toml)
   todo/                        # design/plan notes — excluded from build (internal)
 tests/
   conftest.py                  # isolates test_docs_*.py in a throwaway cwd (module-scoped)
@@ -132,7 +132,7 @@ them, update that page in the same commit:
   ```
 
 - **`llms.txt` / `llms-full.txt` exist and are complete** — they come from the `llmstxt` plugin's
-  `sections` in `mkdocs.yml`. A new page added to `nav` but not to `sections` is missing from both
+  `sections` in `zensical.toml`. A new page added to `nav` but not to `sections` is missing from both
   files, so agents never see it. Add every new page to both.
 
 ## Building & AI-crawler outputs
@@ -143,7 +143,7 @@ them, update that page in the same commit:
   template + `git-revision-date-localized`. Needs real git history; CI checks out with
   `fetch-depth: 0`. Uncommitted files fall back to the build date.
 - `llms.txt` — the sectioned index for AI agents (sections defined under the `llmstxt` plugin in
-  `mkdocs.yml`).
+  `zensical.toml`).
 - `llms-full.txt` — the entire docs concatenated into one file for single-request ingestion.
 
 `--strict` note: `mkdocs build --strict` currently fails only because **mkdocstrings/griffe** emit
@@ -169,7 +169,7 @@ scripts/deploy_docs.sh          # Linux/macOS/git-bash
 Posts are the main content channel and get written often — this is the whole recipe, so you don't
 have to re-derive it by reading five existing posts.
 
-**1. File + front-matter.** One file per post at `docs/blog/posts/<name>.md`. No `mkdocs.yml` nav
+**1. File + front-matter.** One file per post at `docs/blog/posts/<name>.md`. No `zensical.toml` nav
 entry is needed (the Material `blog` plugin picks up `posts/*.md`, and `llmstxt` globs it).
 
 ```yaml
@@ -212,7 +212,7 @@ Then keep going:
 - <3-6 links: sibling posts first, then guide pages, then GitHub>
 ```
 
-**3. Links.** Plain relative Markdown, and `validation` in `mkdocs.yml` fails the build on a bad
+**3. Links.** Plain relative Markdown, and `validation` in `zensical.toml` fails the build on a bad
 target. From a post: a sibling post is `other-post.md`; a guide page is `../../docs/page.md`; the
 blog index is `../index.md`.
 
