@@ -3,7 +3,7 @@ date: 2026-07-23
 slug: cache-intermediate-dataframes-in-python
 categories:
   - Caching
-description: How to cache intermediate DataFrames in Python without the stale-pickle bugs that make you build models on yesterday's data.
+description: "How to cache intermediate DataFrames in Python without stale-pickle bugs, so you never build a model on yesterday's data. Includes an oryxflow example."
 faq:
   - q: "How do I cache intermediate DataFrames in Python without brittle pickle files?"
     a: "Hand-rolled pickle caches key on a filename you chose, which knows nothing about the code that wrote it, so they silently serve stale DataFrames after you edit the logic. Cache by task identity instead: key each cached value on the step's code, inputs, and parameters. oryxflow does this in plain Python, persisting a DataFrame as Parquet automatically and rebuilding it whenever the code or parameters change, so you never name or track a .pkl."

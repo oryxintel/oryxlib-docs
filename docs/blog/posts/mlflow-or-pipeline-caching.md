@@ -3,7 +3,7 @@ date: 2026-07-11
 slug: mlflow-vs-pipeline-caching
 categories:
   - MLOps
-description: They sound like the same problem. They're not — and mixing them up is why so many ML projects still can't reproduce last week's result.
+description: "MLflow tracks experiments; a reproducible pipeline regenerates results. Why mixing them up leaves ML projects unable to reproduce last week's result."
 faq:
   - q: "Do I need MLflow, or just pipeline caching?"
     a: "It depends on which problem bites you. If you can already reproduce runs but can't compare them, you want a tracker like MLflow. If you can log runs but rerunning your pipeline is slow, fragile, and you're never sure what's stale, you want a caching workflow engine. Most real projects want both — oryxflow caches the computation while MLflow records the results."

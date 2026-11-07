@@ -4,7 +4,7 @@ slug: migrate-from-d6tflow-to-oryxflow
 categories:
   - Guides
 title: Migrate from d6tflow to oryxflow
-description: oryxflow is the maintained successor to d6tflow. Migrating is a whole-word d6tflow → oryxflow package rename, not an API port — the task API kept its shape, and your existing data/ cache stays valid because task identities come from your class names and parameters, not the package name.
+description: "Migrate from d6tflow to oryxflow with a whole-word package rename, not an API port. Your data/ cache stays valid because task identity ignores the package name."
 faq:
   - q: "Do I have to migrate all at once?"
     a: "The rename is one atomic pass, so yes — do it in a single commit. It's mechanical and reversible (it's in version control), and there's no half-renamed state worth keeping."

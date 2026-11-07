@@ -3,7 +3,7 @@ date: 2026-07-10
 slug: why-machine-learning-code-is-bad
 categories:
   - Machine learning
-description: The four ways a typical chain-of-functions ML script goes wrong — and what fixes them.
+description: "Four ways a chain-of-functions machine learning script goes wrong, from hand-tracked parameters and file paths to silent stale results, and the fix."
 faq:
   - q: "Why does my machine learning code become unreliable over time?"
     a: "A typical ML script chains functions linearly, so you manually track which functions ran with which parameters and where each output was saved. As complexity grows, that bookkeeping breaks: stale intermediate files, forgotten reruns after a parameter change, and pickle outputs that aren't compressed or portable. Writing the workflow as a DAG of tasks fixes it — oryxflow reruns a task automatically when its inputs or parameters change, so results stay consistent with the code that produced them."

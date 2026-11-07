@@ -3,7 +3,7 @@ date: 2026-07-23
 slug: reproducible-data-science-workflows-in-python
 categories:
   - Reproducibility
-description: What it takes to build reproducible data science workflows in Python — deterministic task identity, automatic invalidation, and lineage — with a small, local-first library.
+description: "Reproducible data science workflows in Python: deterministic task identity, automatic invalidation and lineage, built with a small local-first library."
 faq:
   - q: "How do I make a data science workflow reproducible in Python?"
     a: "A workflow is reproducible when you can name the exact code and inputs behind any result and regenerate it on demand. That takes three things: deterministic task identity from code and parameters, automatic invalidation so you can't test new code against a stale output, and a durable lineage record. oryxflow gives you all three in plain Python, locally, with caching that makes them cheap thrown in for free."

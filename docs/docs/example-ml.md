@@ -1,3 +1,7 @@
+---
+description: "oryxflow machine learning example: build tasks, preview dependencies, train two models, evaluate them, and rerun only what a parameter change affects."
+---
+
 # Example Usage For a Machine Learning Workflow
 
 Below is an example of a typical machine learning workflow: you retreive data, preprocess it, train a model and evaluate the model output.

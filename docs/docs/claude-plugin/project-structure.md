@@ -1,6 +1,6 @@
 ---
 title: Data-science project structure for Claude Code
-description: The oryxflow Claude Code plugin scaffolds a load-bearing data-science project structure — separation of concerns across config, tasks, workflow, and analysis — that keeps AI-generated analysis code from rotting, and grows with the project instead of collapsing.
+description: "The data-science project structure the oryxflow Claude Code plugin scaffolds: config, tasks, workflow and analysis kept separate so AI-written code stays clean."
 ---
 
 # A data-science project structure that stays clean as it grows

@@ -3,7 +3,7 @@ date: 2026-07-23
 slug: oryxflow-vs-dvc
 categories:
   - Comparisons
-description: oryxflow vs DVC — DVC versions big data files as git-pinned pipeline stages; oryxflow builds native Python task identity from parameters and automatic code-change detection, so every result is trustworthy and reproducible. A fair, deep comparison of what each one's identity is made of, and why they compose.
+description: "oryxflow vs DVC: git-pinned file-hash data versioning against Python task identity from parameters and code changes. A fair comparison, and how they compose."
 faq:
   - q: "oryxflow vs DVC — which do I need?"
     a: "Use DVC when the job is versioning large data or model files alongside Git and reproducing a run from a specific commit. Use oryxflow when the job is iterating on Python tasks in a session and needing to trust each result: it reruns exactly what a code or parameter change affects, so nothing is left sitting on stale inputs, and it records what produced every output. They aren't rivals; on a real project you often run both — DVC underneath for versioned artifacts, oryxflow on top for the compute graph."

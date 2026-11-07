@@ -1,3 +1,7 @@
+---
+description: "oryxflow functional tasks: define tasks as decorated functions with a Workflow object and the flow.task decorator instead of writing task classes."
+---
+
 # Functional Tasks
 
 ## What are functional tasks?

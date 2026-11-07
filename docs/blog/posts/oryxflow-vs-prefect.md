@@ -3,7 +3,7 @@ date: 2026-07-23
 slug: oryxflow-vs-prefect
 categories:
   - Comparisons
-description: oryxflow vs Prefect for data science — Prefect is a Python-native orchestrator with configurable result caching; oryxflow makes the research loop trustworthy and reproducible with zero configuration. When you need each, and why they're complementary.
+description: "oryxflow vs Prefect for data science: Python-native orchestration with configurable result caching against zero-config research-loop caching. When to use each."
 faq:
   - q: "Is there a lightweight Prefect alternative for local data science?"
     a: "Yes. oryxflow is a lightweight, local-first alternative to Prefect for data science, built to make the research loop trustworthy and reproducible rather than to orchestrate production. A code, data, or parameter change reruns exactly what it affects out of the box, so a result can't quietly sit on stale inputs, and every run is traceable to what produced it. Prefect can reuse results too, but you configure the cache key and result storage; in oryxflow there is nothing to configure, and no server, account, or telemetry."

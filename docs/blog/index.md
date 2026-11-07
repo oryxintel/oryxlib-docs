@@ -1,6 +1,6 @@
 ---
 title: Blog
-description: Articles on reproducible pipelines, data lineage, tool comparisons (vs Airflow, MLflow, DVC), and trustworthy AI-assisted data science with oryxflow.
+description: "Articles on trustworthy, accurate AI data analysis: reproducible pipelines, caching, lineage, Claude Code plugins, LLM evals and honest oryxflow comparisons."
 ---
 
 # Blog

@@ -1,3 +1,7 @@
+---
+description: "oryxflow quickstart: write two tasks, wrap them in a Workflow, run it and load results by name, with every output cached and tied to its code and parameters."
+---
+
 # Quickstart
 
 oryxflow turns a data-science script into a pipeline of **tasks**, so you can believe the numbers it produces and regenerate them later. You declare each step as a task: what it *depends on* and what it *produces*. The engine runs them in the right order, so no result quietly sits on stale inputs, and every output stays tied to the code and parameters that made it — you can load any result by name and see what produced it. Because nothing is computed twice, that rigor costs you nothing: no manual file paths, no re-running the slow steps to test a fast one.

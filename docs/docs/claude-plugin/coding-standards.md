@@ -1,6 +1,6 @@
 ---
 title: Stop AI data analysis turning into a mess
-description: How the oryxflow Claude Code plugin keeps AI-written data analysis from drifting into a mess — canonical column names, code grouped by subject, docstrings as documentation, applied as the agent writes rather than audited afterward.
+description: "How the oryxflow Claude Code plugin keeps AI-written data analysis tidy: canonical column names, code grouped by subject, docstrings as documentation."
 ---
 
 # Stop AI data analysis from turning into a mess

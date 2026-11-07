@@ -1,5 +1,5 @@
 ---
-description: oryxflow makes AI data analysis trustworthy and reproducible — a Python library and Claude Code plugin that never lets a result sit on stale data, records the code and inputs behind every number, and reruns only what changed so the rigor costs you nothing.
+description: "Python libraries and Claude Code plugins for trustworthy, accurate AI data analysis: oryxflow caches and tracks lineage, oryxeval tests LLM prompts."
 faq:
   - q: "How do I stop rerunning my whole pipeline every time I change one step?"
     a: "oryxflow caches each step's output and reruns only what a code, data, or parameter change affects, plus everything downstream of it. Change one feature and the untouched upstream steps load instantly from cache instead of recomputing. It's a local-first Python library: pip install oryxflow, declare each step as a task, and re-running only pays for what actually changed."
@@ -15,7 +15,7 @@ faq:
     a: "You don't need a task graph for a first look at a dataset — a quick CSV load, a group-by, one plot is fine as a plain script. You don't have to choose upfront, though: start there and run /oryxflow:migrate when the work gains depth, cost, or parameter combinations, and what you already wrote becomes cached tasks. oryxflow earns its keep the moment a stale early step can silently corrupt everything below it, an expensive step makes the edit-run loop painful, or you're sweeping an experiment matrix — which is also where hand-managed scripts and AI coding agents go wrong. It isn't a production orchestrator (use Airflow or Prefect) or an experiment dashboard (use MLflow or Weights & Biases); it composes beside both."
 ---
 
-# oryxflow: trustworthy, accurate AI data analysis
+# oryxflow: trustworthy, accurate AI data analysis { #oryxflow-trustworthy-reproducible-ai-data-analysis }
 
 **Trustworthy, accurate data analysis you can reproduce later — for humans and AI coding agents.**
 oryxflow turns a data-science script into a pipeline where no result can quietly sit on stale
@@ -32,7 +32,7 @@ The docs are [machine-readable too](docs/ai-ready.md) — point it at
 [`llms-full.txt`](https://docs.oryxflow.dev/llms-full.txt) and it has read all of oryxflow in one
 request.
 
-## Why oryxflow: trustworthy, accurate data analysis
+## Why oryxflow: trustworthy, accurate data analysis { #why-oryxflow-trustworthy-reproducible-data-science }
 
 Four things you get on day one — the full argument is in
 **[Why oryxflow](docs/why-oryxflow.md)**:

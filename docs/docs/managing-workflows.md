@@ -1,3 +1,7 @@
+---
+description: "Manage complex oryxflow workflows: iterate granular tasks per item, aggregate their outputs, and selectively rerun so growing analyses stay accurate and cheap."
+---
+
 # Managing Complex Workflows
 
 As a project grows, the thing that actually bites is not that a run is slow — it's that a result can quietly stop being true. You improve the cleaning logic and the model keeps training on last week's features. You change a threshold and can no longer say which chart used which value. Nothing errors; the number looks the same whether it's right or wrong.

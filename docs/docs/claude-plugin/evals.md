@@ -1,6 +1,6 @@
 ---
 title: Scaffold an LLM eval
-description: Four slash commands turn "is this prompt better?" into a kept eval — a plan, a scaffold wired to it, a real case set, and a run that prints its bill before it spends. The files it writes, and what goes in each.
+description: "oryxeval Claude Code plugin: four slash commands that plan an LLM eval, scaffold it, build a real case set and run it, printing its bill before it spends."
 ---
 
 # Scaffold an LLM eval

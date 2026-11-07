@@ -1,3 +1,7 @@
+---
+description: "oryxflow logging with loguru: off by default, enable_logging and disable_logging, levels, colors, custom sinks, and logging from inside your own tasks."
+---
+
 # Logging
 
 oryxflow uses [loguru](https://loguru.readthedocs.io) for logging. So it never interferes with your application's own logging, **oryxflow logging is disabled by default** — out of the box oryxflow emits nothing except the execution summary print. You opt in when you want to see what the engine is doing or to log from inside your own tasks.

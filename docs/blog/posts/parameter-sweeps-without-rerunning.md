@@ -3,7 +3,7 @@ date: 2026-07-23
 slug: parameter-sweeps-without-rerunning
 categories:
   - Caching
-description: Run parameter sweeps in Python that reuse cached upstream steps, so you can compare models and hyperparameters without recomputing the shared data every time.
+description: "Run parameter sweeps in Python that reuse cached upstream steps, so you can compare models and hyperparameters without recomputing the shared data each time."
 faq:
   - q: "How do I run a parameter sweep without rerunning the upstream steps every time?"
     a: "Put the varying choice on a task parameter and let the engine key a separate cached output per value, while the shared upstream steps compute once and are reused across the whole grid. oryxflow does exactly this: changing a parameter reruns only the tasks that depend on it, so a sweep costs you the model fits and not the repeated data loading and feature building."

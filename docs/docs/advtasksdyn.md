@@ -1,3 +1,7 @@
+---
+description: "Generate oryxflow tasks from a list with fan-out or WorkflowMulti, one task per region, file or model, and how to decide when a loop should stay a loop."
+---
+
 # Advanced: Dynamic Workflow Generation
 
 You don't have to write out every task by hand. When the shape of the work comes from a list — one task per region, per file, per model — you write the list once and let oryxflow generate the tasks from it. Everything on this page builds on that one idea.

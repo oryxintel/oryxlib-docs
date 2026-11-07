@@ -1,3 +1,7 @@
+---
+description: "oryxflow parameters: give a task parameters and it keeps a separate cached output per parameter set, rerunning only the tasks a change affects."
+---
+
 # Advanced: Parameters
 
 Intelligent parameter management is one of the most powerful features of oryxflow. Parameters are how you try different settings — a preprocessing flag, a model choice, a date range — without copying files or renaming outputs by hand. Give a task parameters and oryxflow keeps a **separate cached output per parameter set**, so you can compare runs side by side and switch between them instantly; change a parameter and it reruns exactly the tasks that depend on it and leaves the rest untouched, so a result always matches the settings it is filed under. Nothing else recomputes, which is what keeps experimenting cheap. New users often have questions on parameter management, this is an important section to read.

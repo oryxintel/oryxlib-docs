@@ -32,6 +32,18 @@ A site-wide refactor is verified by diffing the built `site/` against a saved ba
 `python scripts/compare_sites.py <baseline-site> site --allow scripts/compare_allow.txt` (0 problems
 expected; every accepted difference is a `# reason` entry in `compare_allow.txt`).
 
+## SEO metadata
+
+Every page needs its own `description:` in front matter, 120-160 characters, specific to that
+page, key phrase first. `overrides/main.html` turns it into the description meta, Open Graph and
+Twitter tags (image: the site logo, so the small `summary` card). The pages the blog plugin
+generates (category, archive, pagination) take their text from `[project.extra.seo]` in
+`zensical.toml`: add a line there when you add a blog category. After the build,
+`scripts/check_seo.py` fails on a missing title, description, canonical or `og:*` tag and on
+duplicate titles or descriptions, and warns on length (titles over 65 characters, descriptions
+outside 120-160). Family-level wording says "Python libraries and Claude Code plugins for
+trustworthy, accurate AI data analysis"; a page about one library speaks about that library.
+
 ## Site tabs (top navigation)
 
 `navigation.tabs` is on; the top-level `nav` entries in `zensical.toml` are the tabs. Page paths
@@ -57,7 +69,7 @@ live in the `docs/docs/` subfolder to get the `/docs/` prefix.
 
 ```
 zensical.toml                 # site config: theme (black header, blue links, logo), nav, plugins
-overrides/                     # theme overrides (main.html: JSON-LD, FAQ)
+overrides/                     # theme overrides (main.html: titles, descriptions, Open Graph, JSON-LD, FAQ)
 _external/                     # COMMITTED changelog snapshots of oryxflow/oryxeval (see Releasing)
 devops/sync-release.sh / .ps1  # sync + build + commit after a library release
 docs/                          # docs_dir
@@ -86,6 +98,7 @@ scripts/
   build_docs.py                # fetch changelogs, regenerate doc tests, run them, `zensical build`, stamp dates
   sync_release.py              # copy changelogs into _external/, re-pin oryxflow for Cloudflare
   compare_sites.py             # parity diff of two built sites (+ compare_allow.txt)
+  check_seo.py                 # build-time SEO check: required tags, duplicate titles/descriptions
 .github/workflows/docs.yml     # CI: build + test only (no deploy)
 ```
 

@@ -1,3 +1,7 @@
+---
+description: "oryxflow security and supply chain: signed PyPI provenance, no known vulnerabilities, MIT licence, five direct dependencies and allowlist requests."
+---
+
 # Security & supply chain
 
 [![Socket Badge](https://socket.dev/api/badge/pypi/package/oryxflow)](https://socket.dev/pypi/package/oryxflow)

@@ -1,6 +1,6 @@
 ---
 title: Claude Code for data science
-description: The oryxflow plugin makes AI data analysis trustworthy and reproducible — a Claude Code plugin and skill for data science that stops the agent building on stale data and records exactly what produced every result.
+description: "Claude Code for data science: the oryxflow plugin and skill stop the agent building on stale data and record what produced every result."
 faq:
   - q: "Does oryxflow work with any AI coding agent, or only Claude Code?"
     a: "The library is a plain Python package — it works no matter who writes the code, including you by hand. The plugin packages the disciplines specifically for Claude Code; other agents can follow the same CLAUDE.md conventions manually."
@@ -14,7 +14,7 @@ faq:
     a: "No, because it covers exploration too rather than demanding a pipeline upfront. Ask the agent to look at a new dataset and it writes a re-runnable read-only probe under eda/, documenting the question and recording anything it learns, instead of scattering one-off snippets. When a probe turns out to be load-bearing, /oryxflow:migrate lifts it into cached tasks. So you start with simple scripts and scale to any complexity later, with no rewrite in between."
 ---
 
-# Claude Code for data science: trustworthy, accurate AI data analysis
+# Claude Code for data science: trustworthy, accurate AI data analysis { #claude-code-for-data-science-trustworthy-reproducible-ai-data-analysis }
 
 **oryxflow makes AI data analysis trustworthy and accurate.** It's a Claude Code plugin and
 skill for data science, backed by a Python library, that teaches your coding agent to build the

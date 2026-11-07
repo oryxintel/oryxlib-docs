@@ -3,7 +3,7 @@ date: 2026-07-11
 slug: stop-rerunning-your-pipeline
 categories:
   - Caching
-description: Why you rerun everything — you can't tell what's stale — and how declaring your steps as tasks reruns exactly what a change affects, so results stay trustworthy and reruns stay cheap.
+description: "Stop rerunning your whole pipeline when one step changes: declare steps as tasks and oryxflow reruns only what a change affects, keeping results trustworthy."
 faq:
   - q: "Can I trust a pipeline that skips steps it has already run?"
     a: "Only if the decision to skip is made from the identity of the work rather than from a filename you chose. oryxflow derives each task's identity from its code, its inputs, and its parameters, so a step is reused only when all three are unchanged, and it reruns automatically the moment any of them move. A result therefore can't quietly sit on data or logic you have since changed — you get the answer a from-scratch run would give, without paying for the from-scratch run."

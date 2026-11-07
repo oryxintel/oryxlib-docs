@@ -3,7 +3,7 @@ date: 2026-07-23
 slug: oryxflow-vs-pipeline-frameworks
 categories:
   - Comparisons
-description: A hands-on comparison of Python pipeline frameworks for iterative, AI-assisted data analysis — orchestrators (Airflow, Prefect, Dagster, Luigi, Kedro, Metaflow, Flyte, ZenML) and experiment trackers (MLflow, W&B, DVC) — and where a local layer that keeps the research loop trustworthy and reproducible fits.
+description: "oryxflow vs pipeline frameworks for AI data analysis: Airflow, Prefect, Dagster, Luigi, Kedro, Metaflow, Flyte, ZenML, MLflow, W&B and DVC compared hands-on."
 faq:
   - q: "Which workflow tool should I use for local data science — Airflow, Prefect, Dagster, or something lighter?"
     a: "Airflow, Prefect, and Dagster are built for scheduled or distributed production pipelines — real infrastructure that a solo research loop doesn't need. For iterating on analysis locally all day, what you need is a result you can believe and regenerate. oryxflow gives you that: an edit to a task or the helper it calls reruns exactly what it affects, outputs are stored per task and parameters with no paths to invent, and it's local and pip-installable. Hand the stable pipeline to an orchestrator when it's production."

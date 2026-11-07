@@ -164,3 +164,20 @@ def test_shallow_clone_is_unshallowed_when_possible(tmp_path):
     subprocess.run(["git", "clone", "-q", "--depth", "1", origin.as_uri(), str(clone)], check=True)
     assert sl.ensure_full_history(clone) is True
     assert sl.git_date(clone / "docs" / "a.md", clone) == "2020-01-01"
+
+
+def test_article_modified_time_meta_added_after_og_type(site_repo):
+    docs, site = site_repo
+    head = '<meta property="og:type" content="article"><meta property="og:title" content="A">'
+    _write(site / "docs/a/index.html", f"<html><head>{head}</head><body>x</body></html>")
+    _write(site / "docs/other/index.html",
+           '<html><head><meta property="og:type" content="website"></head><body>x</body></html>')
+    assert sl.stamp_date_modified(site, docs) == 1
+    after = (site / "docs/a/index.html").read_text(encoding="utf-8")
+    assert after.count('property="article:modified_time"') == 1
+    assert 'content="2025-03-04"' in after.split("article:modified_time")[1]
+    assert after.index("og:type") < after.index("article:modified_time") < after.index("og:title")
+    # idempotent, and listing pages (og:type website) are left alone
+    assert sl.stamp_date_modified(site, docs) == 0
+    assert (site / "docs/a/index.html").read_text(encoding="utf-8").count("article:modified_time") == 1
+    assert "article:modified_time" not in (site / "docs/other/index.html").read_text(encoding="utf-8")

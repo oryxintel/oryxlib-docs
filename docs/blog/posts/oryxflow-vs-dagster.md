@@ -3,7 +3,7 @@ date: 2026-07-23
 slug: oryxflow-vs-dagster
 categories:
   - Comparisons
-description: Dagster is an asset-oriented data orchestrator with a server, UI, and IO managers; oryxflow is a local, zero-config way to make the research loop trustworthy and reproducible. An honest comparison of when to use Dagster for machine learning experimentation and when to reach for oryxflow.
+description: "oryxflow vs Dagster: an asset-based orchestrator with a server and UI against a local, zero-config research loop. When each fits machine learning experiments."
 faq:
   - q: "Is there a lighter-weight alternative to Dagster for local analysis?"
     a: "Yes. oryxflow is a lightweight alternative to Dagster for local analysis: a pip install with no server, database, or UI. Where Dagster is an asset platform a team runs in production, oryxflow makes the research loop you edit all day trustworthy and reproducible — a code, data, or parameter change reruns exactly what it affects, and every run lands in a plain local lineage log. Because unchanged work is reused rather than recomputed, none of that costs you rerun time. Promote the stable pipeline to Dagster later."

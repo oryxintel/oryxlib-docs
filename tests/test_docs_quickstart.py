@@ -4,7 +4,7 @@ import pytest
 from phmdoctest.fixture import managenamespace
 
 
-def test_code_24(managenamespace):
+def test_code_28(managenamespace):
     import oryxflow
     import pandas as pd
 
@@ -24,7 +24,7 @@ def test_code_24(managenamespace):
     managenamespace(operation="update", additions=locals())
 
 
-def test_code_44(managenamespace):
+def test_code_48(managenamespace):
     flow = oryxflow.Workflow(ProcessData)
 
     flow.preview()          # show what will run, without running it
@@ -37,7 +37,7 @@ def test_code_44(managenamespace):
     managenamespace(operation="update", additions=locals())
 
 
-def test_code_63(managenamespace):
+def test_code_67(managenamespace):
     @oryxflow.requires(GetData)
     class ProcessData(oryxflow.tasks.TaskPqPandas):
         power = oryxflow.IntParameter(default=2)    # a knob to experiment with
@@ -55,7 +55,7 @@ def test_code_63(managenamespace):
     managenamespace(operation="update", additions=locals())
 
 
-def test_code_85(managenamespace):
+def test_code_89(managenamespace):
     import oryxflow
     import pandas as pd
     import sklearn.datasets, sklearn.preprocessing
@@ -97,7 +97,7 @@ def test_code_85(managenamespace):
     managenamespace(operation="update", additions=locals())
 
 
-def test_code_127(managenamespace):
+def test_code_131(managenamespace):
     flow = oryxflow.WorkflowMulti(ModelTrain, {
         'ols': {'do_preprocess': True,  'model': 'ols'},
         'gbm': {'do_preprocess': False, 'model': 'gbm'},

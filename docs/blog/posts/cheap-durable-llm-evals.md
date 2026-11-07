@@ -3,7 +3,7 @@ date: 2026-07-25
 slug: cheap-durable-llm-evals
 categories:
   - Guides
-description: An eval matrix is a Cartesian product of cases, scorers, models, prompts and reps — and metered eval platforms bill every cell, every time, then delete the results in 14 to 30 days. Score with pydantic-evals, cache the matrix with oryxflow, and only pay for the cell you changed.
+description: "Cheap, durable LLM evals: score with pydantic-evals, cache the case-by-model-by-prompt matrix with oryxflow, and pay only for the cell you changed."
 faq:
   - q: "Why does Braintrust get expensive as my evals grow?"
     a: "Because an eval matrix is a Cartesian product and scores are metered per unit. Cases times scorers times models times prompt variants times repetitions multiplies fast: 500 cases with 6 scorers across 4 models, 3 prompts and 3 reps is 108,000 scores per sweep. Run that weekly and Pro's included 50,000 scores per month is gone in the first sweep — at $1.50 per additional 1,000 the monthly bill lands near $822. Nothing pathological caused it; every dimension grew for a good reason and they multiply."

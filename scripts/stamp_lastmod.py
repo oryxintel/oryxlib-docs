@@ -7,7 +7,8 @@ date of the file's last git commit (`git log -1 --format=%cs`) into
 
   * site/sitemap.xml: a <lastmod> after each matching <loc>
   * site/<page>/index.html: "dateModified" on the page's JSON-LD article node
-    (TechArticle / BlogPosting; the home page's SoftwareApplication)
+    (TechArticle / BlogPosting; the home page's SoftwareApplication), and an
+    <meta property="article:modified_time"> after the page's og:type=article tag
 
 Files without commits (new, untracked) are skipped, so their pages carry no date.
 
@@ -33,6 +34,9 @@ _FRONT_RE = re.compile(r"^-{3}[ \t]*\r?\n(.*?)\r?\n(?:-{3}|\.{3})[ \t]*\r?\n", r
 _LOC_RE = re.compile(r"([ \t]*)<loc>(.*?)</loc>")
 _LD_RE = re.compile(r'(<script type="application/ld\+json">)(.*?)(</script>)', re.DOTALL)
 ARTICLE_TYPES = {"TechArticle", "BlogPosting"}
+# The template (overrides/main.html) emits og:type=article on docs pages and posts; the modified
+# time is only known after the build, so it is inserted right after that tag.
+_OG_ARTICLE_RE = re.compile(r'(<meta property="og:type" content="article">)')
 
 
 def slugify(text: str) -> str:
@@ -196,7 +200,9 @@ def _nodes(data):
 
 
 def stamp_date_modified(site: Path, docs_dir: Path) -> int:
-    """Set JSON-LD dateModified on each page that has a git date; return pages stamped."""
+    """Set JSON-LD dateModified (and article:modified_time) on each page with a git date.
+
+    Returns the number of pages stamped."""
     site = Path(site)
     count = 0
     dates = dates_by_url(docs_dir)
@@ -228,6 +234,10 @@ def stamp_date_modified(site: Path, docs_dir: Path) -> int:
             return f"{m.group(1)}\n{_dump(data)}\n{m.group(3)}"
 
         new = _LD_RE.sub(repl, text)
+        if "article:modified_time" not in new:
+            new, n_meta = _OG_ARTICLE_RE.subn(
+                lambda m: f'{m.group(1)}\n  <meta property="article:modified_time" content="{d}">', new, count=1)
+            hit = hit or bool(n_meta)
         if hit:
             page.write_text(new, encoding="utf-8", newline="")
             count += 1

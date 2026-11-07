@@ -3,7 +3,7 @@ date: 2026-07-23
 slug: oryxflow-vs-airflow
 categories:
   - Comparisons
-description: Airflow orchestrates scheduled production pipelines; oryxflow makes an iterative research loop trustworthy and reproducible. A clear-eyed comparison of when you need a scheduler and when you need results you can believe and regenerate — and why they're complementary, not competitors.
+description: "oryxflow vs Airflow: Airflow orchestrates scheduled production pipelines; oryxflow keeps an iterative research loop reproducible. When to use each, or both."
 faq:
   - q: "What's a lightweight alternative to Airflow for research pipelines?"
     a: "oryxflow is a lightweight, local-first alternative to Airflow built for the research loop rather than production scheduling. It makes each result something you can believe and regenerate: a change to your code, data, or parameters reruns exactly what it affects, and every run is recorded to a plain lineage log you can grep. You pip install it, write task classes, and call run() — no scheduler, metadata database, or dag-processor. And because nothing recomputes twice, the trustworthy path is also the fast one."

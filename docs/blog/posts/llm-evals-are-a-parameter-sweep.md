@@ -3,7 +3,7 @@ date: 2026-07-25
 slug: llm-evals-are-a-parameter-sweep
 categories:
   - AI agents
-description: Every LLM eval question reduces to one shape — a labeled dataset, run under N configurations, compared. That's a parameter sweep, and it already has good tooling. Use pydantic-evals for scoring and a caching DAG for the matrix.
+description: "Every LLM eval is a labeled dataset run under N configurations: a parameter sweep. Use pydantic-evals to score and a caching DAG to manage the matrix."
 faq:
   - q: "Are LLM evals just a parameter sweep?"
     a: "Structurally, yes. \"Is my classifier right\", \"did my prompt change help\", and \"is the cheap model good enough\" are all the same shape underneath: a labeled dataset, run under N configurations, compared. Cases, scorers, models, prompt variants and repetitions are the axes of a grid, which makes an eval matrix a Cartesian product over parameters — exactly what parameter-sweep tooling has handled well for a decade. What is genuinely new is the scoring, and pydantic-evals covers that."

@@ -1,3 +1,7 @@
+---
+description: "Write oryxflow tasks: declare dependencies and outputs, pick a parent class for the output format, and let the engine load inputs and reuse saved results."
+---
+
 # Writing and Managing Tasks
 
 ## What are tasks?

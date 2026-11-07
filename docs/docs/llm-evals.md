@@ -1,6 +1,6 @@
 ---
 title: LLM evals
-description: Run an LLM eval as a cached parameter sweep — one cached cell per arm, so a re-run costs nothing and editing a prompt re-runs only what it touched. Confidence intervals, guardrails, and a verdict that refuses to name a winner inside the noise.
+description: "Run an LLM eval with oryxeval as a cached parameter sweep: reruns cost nothing, edits rerun only what they touch, and no winner is named inside the noise."
 ---
 
 # LLM evals

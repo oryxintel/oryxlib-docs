@@ -1,6 +1,6 @@
 ---
 title: Prompt files
-description: Keep each prompt in its own markdown file with YAML front matter, and let git hold the versions. How to lift a prompt out of a Python string, which arm reads which copy, and the re-run that proves the prompt that shipped is the prompt that won.
+description: "Keep each LLM prompt in a markdown file with YAML front matter and git versions. Which arm reads which copy, and the rerun that proves the shipped prompt won."
 ---
 
 # Prompt files

@@ -1,3 +1,7 @@
+---
+description: "Turn a Jupyter notebook into an oryxflow report that reruns only when its inputs change, with a clean HTML copy without code and a readable published name."
+---
+
 # Reports from notebooks
 
 Turn a Jupyter notebook into a report that oryxflow keeps up to date. You write the notebook once as a template. oryxflow runs it with your task's parameters, saves the finished notebook and a clean HTML copy without the code, and reruns it only when something that feeds it has changed.

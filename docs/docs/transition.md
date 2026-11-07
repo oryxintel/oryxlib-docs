@@ -1,3 +1,7 @@
+---
+description: "Transition from scripts to oryxflow: turn a chain of functions into cached tasks so you can tell what is stale, trace each output and skip unchanged work."
+---
+
 # Transition to oryxflow: from scripts to reproducible data science pipelines
 
 Most data-science code starts as a script: a chain of functions that read a file, transform it, and write the next file, wired together by hand at the bottom. It works until it doesn't — you change one step and have to remember which downstream files are now stale, six months later you can't tell which parameters produced which output, and the only safe move you have left is to re-run the whole thing, slow data pull included, to test a one-line change.

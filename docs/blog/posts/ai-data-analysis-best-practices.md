@@ -3,7 +3,7 @@ date: 2026-07-23
 slug: best-practices-ai-assisted-data-analysis
 categories:
   - AI agents
-description: AI-assisted data analysis best practices for making AI-generated pipelines trustworthy AI data science — reproducible by structure, verified by human judgment.
+description: "AI data analysis best practices: make AI-generated pipelines trustworthy and reproducible by structure, and keep human judgment where verification needs it."
 faq:
   - q: "What are best practices for AI-assisted data analysis?"
     a: "Structure the work as a dependency graph instead of a linear script, cache expensive steps, keep a durable link between code and output, retain auditable lineage, verify that edits actually reran, separate exploration from the pipeline, version your data, and never outsource statistical judgment. The first seven you can hand to tooling; oryxflow and its Claude Code plugin enforce them, and the last stays with you."

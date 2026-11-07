@@ -3,7 +3,7 @@ date: 2026-07-23
 slug: claude-code-skills-for-data-science
 categories:
   - AI agents
-description: What Claude Code skills are, how they differ from plugins, slash commands, and MCP servers, and why a skill is the right tool for keeping AI-written data analysis reproducible — with the oryxflow skill as a worked example.
+description: "What Claude Code skills are, how they differ from plugins, slash commands and MCP servers, and how the oryxflow skill keeps AI-written analysis reproducible."
 faq:
   - q: "What are Claude Code skills?"
     a: "Claude Code skills are bundles of instructions and conventions the agent loads automatically when they become relevant, so you never invoke them. A skill differs from a slash command, which is an explicit action, and from an MCP server, which is an external data connector. Skills change how the agent works with what is already on your machine. oryxflow ships one for reproducible data science."

@@ -1,6 +1,6 @@
 ---
 title: What an eval plan must contain
-description: The six sections an LLM eval plan needs before anyone can run it — goal, models, prompts, success measure and hypothesis test, data, credentials — and the checks that each number traces to a column.
+description: "What an LLM eval plan must contain: goal, models, prompts, success measure with hypothesis test, data and credentials, with each number traced to a column."
 ---
 
 # What an eval plan must contain

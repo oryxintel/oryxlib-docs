@@ -1,3 +1,7 @@
+---
+description: "oryxflow task I/O targets: choose the parent class (parquet, CSV, pickle, JSON, in-memory) to set how task output is saved and loaded, and where it is stored."
+---
+
 # Task I/O Targets
 
 The format your task output is saved in matters more than it first appears: it decides how fast your pipeline reads and writes between steps, whether a result survives a restart or lives only for the session, and whether a teammate can open the file directly. oryxflow lets you pick that format by **choosing a parent class** — you never write save/load code, and you can switch a task from parquet to CSV (or to an in-memory cache while you iterate) by changing one base class.

@@ -1,6 +1,6 @@
 ---
 title: LLM eval quickstart
-description: A complete LLM eval in one file — cases, two arms, an LLM judge, confidence intervals and a cached verdict. What each line does, what it prints, and what to add next.
+description: "oryxeval quickstart: a complete LLM eval in one file with cases, two arms, an LLM judge, confidence intervals and a cached verdict, line by line."
 ---
 
 # LLM eval quickstart

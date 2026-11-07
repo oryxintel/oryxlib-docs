@@ -1,6 +1,6 @@
 ---
 title: Glossary
-description: Plain-language definitions of the oryxflow concepts — reproducible pipeline, data lineage, code-change reruns, task DAG, Claude Code plugin vs skill, parameter sweeps, and caching.
+description: "oryxflow glossary: plain definitions of reproducible pipeline, data lineage, code-change invalidation, task DAG, plugin vs skill, parameter sweep and caching."
 ---
 
 # oryxflow glossary

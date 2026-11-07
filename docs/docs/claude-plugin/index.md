@@ -1,6 +1,6 @@
 ---
 title: Build with Claude Code
-description: The oryxflow Claude Code plugin makes AI data analysis trustworthy and reproducible — your coding agent verifies its own reruns, never builds on stale data, and records what produced every result.
+description: "The oryxflow Claude Code plugin: your coding agent verifies its own reruns, never builds on stale data and records what produced every result."
 ---
 
 # Build trustworthy AI data analysis with Claude Code

@@ -277,3 +277,20 @@ exists, and reruns exactly what a parameter, data, or code change affects."""
     "blog/index.md",
     "blog/posts/*.md",
 ]
+
+# Crawler-facing descriptions for the pages the blog plugin generates (category and archive
+# listings, pagination). Read by overrides/main.html. Keep each one 120-160 characters; the
+# template appends " Page N." on paginated pages, so category texts stay at 148 or fewer.
+# Pages with their own front-matter `description:` never use these. A category added later
+# without an entry gets a generic (still unique) text; add one here.
+[project.extra.seo]
+blog_paged = "Older articles from the oryxflow blog on trustworthy, accurate AI data analysis: pipelines, caching, lineage, Claude Code and LLM evals. Page {n}."
+
+[project.extra.seo.categories]
+"ai-agents" = "Blog posts on AI coding agents and Claude Code for data science: where agents fail at pipelines, and the plugins and skills that keep analysis accurate."
+"caching" = "Blog posts on caching in Python data pipelines: intermediate DataFrames, parameter sweeps and rerunning only what changed, with oryxflow."
+"comparisons" = "Blog posts comparing oryxflow with Airflow, Prefect, Dagster, DVC, MLflow and other pipeline and experiment-tracking tools, and when to use each."
+"guides" = "Practical oryxflow guides: migrating from d6tflow, building cheap and durable LLM evals, and recognizing when oryxflow is the wrong tool for the job."
+"machine-learning" = "Blog posts on machine learning code: why chained-function ML scripts go wrong and how oryxflow tasks keep results trustworthy."
+"mlops" = "Blog posts on MLOps: how experiment tracking such as MLflow differs from reproducible pipeline caching, and which problem each one solves."
+"reproducibility" = "Blog posts on reproducibility in data science: lineage, task identity and turning messy notebooks into reproducible Python pipelines."

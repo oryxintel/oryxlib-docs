@@ -1,6 +1,6 @@
 ---
 title: Documentation
-description: "oryxflow documentation — build trustworthy, reproducible data science pipelines in Python: install, quickstart, guides for tasks, workflows, parameters, I/O formats, and the API reference."
+description: "oryxflow documentation: install, quickstart, and guides to tasks, workflows, parameters and I/O formats, plus the API reference for Python data pipelines."
 ---
 
 # oryxflow documentation

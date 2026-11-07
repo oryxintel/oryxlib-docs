@@ -1,6 +1,6 @@
 ---
 title: The oryxflow library + Claude Code plugin for AI data analysis
-description: How the oryxflow library and its Claude Code plugin divide the work of trustworthy AI data analysis — the library carries the state an agent can't hold; the skill carries the disciplines the library can't enforce.
+description: "Why the oryxflow library and Claude Code plugin are a matched pair: the library holds state an agent can't, the skill holds habits the library can't."
 ---
 
 # Why the oryxflow library and Claude Code plugin are a matched pair for AI data analysis

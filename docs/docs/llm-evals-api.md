@@ -1,6 +1,6 @@
 ---
 title: Classes and functions
-description: Everything oryxeval exports, grouped by when you meet it — the six names you use every time, then arms and baselines, judge validation, statistics, and errors.
+description: "oryxeval API reference: the six names you use every time, then arms and baselines, judge validation, statistics and errors, grouped by when you meet them."
 ---
 
 # Classes and functions

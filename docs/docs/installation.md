@@ -1,3 +1,7 @@
+---
+description: "Install oryxflow with pip install oryxflow (Python 3 only), upgrade it, or install the development version from the GitHub repository."
+---
+
 # Installation
 
 Install the latest release from PyPI:

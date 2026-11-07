@@ -12,6 +12,7 @@ Exit code 1 when any problem is found. ``--allow`` names a file with one entry p
   or asset), or present only in OLD when it is a non-page file (a generator replaced it).
   A page (.html) missing from NEW is never allowed.
 * ``description:<page path>``: that page's meta description may differ.
+* ``title:<page path>``: that page's <title> may differ (every other common page must have an equal title).
 * ``sitemap-loc:<url>``: that <loc> may be present only in NEW's sitemap.
 * ``llms-url:<url>``: that URL may be present only in NEW's llms.txt.
 * ``llms-sections``: llms.txt section headings may differ (a deliberate restructure).
@@ -58,6 +59,8 @@ class _PageInfo(HTMLParser):
         super().__init__(convert_charrefs=True)
         self.canonical = None
         self.description = None
+        self.title = None
+        self._in_title = False
         self.heading_ids: list[str] = []
         self.ld_types: Counter = Counter()
         self.assets: set[str] = set()  # basenames of extra.css/js and font preloads
@@ -75,6 +78,9 @@ class _PageInfo(HTMLParser):
             if "preload" in rel and a.get("as", "").lower() == "font" and href:
                 self.assets.add(_basename(href))
             self._maybe_extra(href)
+        elif tag == "title" and self.title is None:
+            self._in_title = True
+            self.title = ""
         elif tag == "script":
             self._maybe_extra(a.get("src", ""))
             if a.get("type", "").lower() == "application/ld+json":
@@ -97,10 +103,14 @@ class _PageInfo(HTMLParser):
             self.assets.add(name)
 
     def handle_data(self, data):
+        if self._in_title:
+            self.title = (self.title or "") + data
         if self._in_ld:
             self._ld_buf.append(data)
 
     def handle_endtag(self, tag):
+        if tag == "title":
+            self._in_title = False
         if tag == "script" and self._in_ld:
             self._in_ld = False
             self._collect_ld("".join(self._ld_buf))
@@ -235,6 +245,8 @@ def _rule_page(page, o: _PageInfo, n: _PageInfo, allow=frozenset()):
         probs.append(f"{page}: canonical differs (old {o.canonical!r}, new {n.canonical!r})")
     if o.description != n.description and f"description:{page}" not in allow:
         probs.append(f"{page}: meta description differs (old {o.description!r}, new {n.description!r})")
+    if o.title != n.title and f"title:{page}" not in allow:
+        probs.append(f"{page}: <title> differs (old {o.title!r}, new {n.title!r})")
     missing_ids = [i for i in dict.fromkeys(o.heading_ids) if i not in set(n.heading_ids)]
     if missing_ids:
         probs.append(
@@ -291,7 +303,7 @@ def main(argv=None) -> int:
     ap = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     ap.add_argument("old", type=Path)
     ap.add_argument("new", type=Path)
-    ap.add_argument("--allow", help="file of accepted differences: site-relative paths, or description:<page> lines")
+    ap.add_argument("--allow", help="file of accepted differences: site-relative paths, or description:<page> / title:<page> lines")
     args = ap.parse_args(argv)
     problems = compare(args.old, args.new, _read_allow(args.allow))
     for p in problems:

@@ -3,7 +3,7 @@ date: 2026-07-25
 slug: llm-eval-results-deleted-retention
 categories:
   - AI agents
-description: LLM eval platforms delete your results after 14–30 days. But an LLM eval is just a labeled dataset run under N configs — a parameter sweep. Keep the scored rows locally with pydantic-evals and oryxflow, and pay only for the cell you added.
+description: "LLM eval platforms delete results after 14 to 30 days. An eval is a parameter sweep: keep scored rows locally with pydantic-evals and oryxflow."
 faq:
   - q: "How long do LLM eval platforms keep my results?"
     a: "Not long, by design. As of July 2026 Logfire retains 30 days on its free and Team plans and up to 90 days on Growth; Braintrust retains 14 days on its free Starter plan and 30 days on Pro at $249/month. Longer windows are Enterprise-priced. These are working sets, not archives — if you want a July benchmark still readable in December, you have to keep a copy yourself."

@@ -3,7 +3,7 @@ date: 2026-07-23
 slug: when-not-to-use-oryxflow
 categories:
   - Guides
-description: An honest guide to when oryxflow is the wrong tool — production orchestration, distributed scale, dashboards, and what a caching pipeline library can't check.
+description: "When not to use oryxflow: production orchestration, distributed scale and dashboards are other tools' jobs, and a caching pipeline library has limits."
 faq:
   - q: "When should I not use oryxflow?"
     a: "Skip oryxflow for production orchestration (scheduling, retries, alerting — use Airflow, Prefect, or Dagster), for distributed or larger-than-memory execution (Flyte or Metaflow), for a hosted experiment dashboard (MLflow or W&B), and for Git-tied data versioning (DVC). oryxflow is a local, zero-infrastructure library for making research results trustworthy and reproducible; it reruns exactly what a change affects and reuses the rest, but it doesn't schedule, scale out, or display."

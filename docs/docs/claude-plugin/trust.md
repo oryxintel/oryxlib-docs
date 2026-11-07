@@ -1,6 +1,6 @@
 ---
 title: Trustworthy AI data analysis
-description: How the oryxflow Claude Code plugin makes an AI agent's data analysis verifiable — session-start status, rerun verification, answered staleness warnings, and durable lineage — so you check the work cheaply instead of taking it on faith.
+description: "How the oryxflow Claude Code plugin makes an AI agent's data analysis checkable: session-start status, rerun verification, staleness warnings and lineage."
 ---
 
 # Trustworthy AI data analysis

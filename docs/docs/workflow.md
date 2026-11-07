@@ -1,3 +1,7 @@
+---
+description: "The oryxflow Workflow object: define a workflow with a default task and parameters, preview the flow, then run it to orchestrate the task pipeline."
+---
+
 # Workflow
 
 Workflow object is used to orchestrate tasks and define a task pipeline

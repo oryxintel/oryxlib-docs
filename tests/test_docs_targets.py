@@ -4,7 +4,7 @@ import pytest
 from phmdoctest.fixture import managenamespace
 
 
-def test_code_54(managenamespace):
+def test_code_58(managenamespace):
     import oryxflow
 
     class GetConfig(oryxflow.tasks.TaskJson):
@@ -27,7 +27,7 @@ def test_code_54(managenamespace):
     managenamespace(operation="update", additions=locals())
 
 
-def test_code_77(managenamespace):
+def test_code_81(managenamespace):
     class ScoreModel(oryxflow.tasks.TaskJson):
         persists = ['metrics', 'warnings']
 
@@ -42,7 +42,7 @@ def test_code_77(managenamespace):
     managenamespace(operation="update", additions=locals())
 
 
-def test_code_94(managenamespace):
+def test_code_98(managenamespace):
     class TrainModel(oryxflow.tasks.TaskPickle):
 
         def run(self):
@@ -57,7 +57,7 @@ def test_code_94(managenamespace):
     managenamespace(operation="update", additions=locals())
 
 
-def test_code_113(managenamespace):
+def test_code_117(managenamespace):
     class WriteReport(oryxflow.tasks.TaskMarkdown):
 
         def run(self):
@@ -71,7 +71,7 @@ def test_code_113(managenamespace):
     managenamespace(operation="update", additions=locals())
 
 
-def test_code_129(managenamespace):
+def test_code_133(managenamespace):
     import pandas as pd
 
     df_perf = pd.DataFrame({
@@ -94,21 +94,21 @@ def test_code_129(managenamespace):
     managenamespace(operation="update", additions=locals())
 
 
-def test_code_152(managenamespace):
+def test_code_156(managenamespace):
     oryxflow.utils.excel_write('report.xlsx', {'summary': df_perf})
 
     # Caution- no assertions.
     managenamespace(operation="update", additions=locals())
 
 
-def test_code_177(managenamespace):
+def test_code_181(managenamespace):
     oryxflow.utils.excel_write('report.xlsx', {'summary': df_perf}, format_float='pct')
 
     # Caution- no assertions.
     managenamespace(operation="update", additions=locals())
 
 
-def test_code_188(managenamespace):
+def test_code_192(managenamespace):
     df_rank = pd.DataFrame({
         'name': ['Alpha County', 'Beta County'],
         'rating': ['Green', 'Red'],
@@ -140,7 +140,7 @@ def test_code_188(managenamespace):
     managenamespace(operation="update", additions=locals())
 
 
-def test_code_220(managenamespace):
+def test_code_224(managenamespace):
     path_rank = flow_rank.outputPath()
     back = pd.read_excel(path_rank, sheet_name='retail', skiprows=3, dtype={'fips': str})
 

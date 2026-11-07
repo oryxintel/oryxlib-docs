@@ -3,7 +3,7 @@ date: 2026-07-23
 slug: best-claude-code-plugins-for-data-science
 categories:
   - AI agents
-description: A practical roundup of the best Claude Code plugins and tools for data science, chosen by the job each one does — reproducibility, data access, notebooks, and experiment tracking.
+description: "The best Claude Code plugins for data science, chosen by the job each does: reproducibility, data access, notebooks and experiment tracking."
 faq:
   - q: "What are the best Claude Code plugins for data science?"
     a: "The best Claude Code plugin depends on the job: use an MCP connector to reach your data, a notebook tool to explore, an experiment tracker to compare runs, and oryxflow to make the pipeline itself trustworthy and reproducible — so the agent never builds on stale data and every result traces back to the code that made it. They compose rather than compete: reach data with a connector, wire the steps with oryxflow, and log outcomes to your tracker. Note oryxflow is a skill plus slash commands, not an MCP server."

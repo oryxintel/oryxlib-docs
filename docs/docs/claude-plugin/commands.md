@@ -1,6 +1,6 @@
 ---
 title: Plugin commands
-description: The oryxflow Claude Code plugin's slash commands — scaffold a project, migrate an existing analysis into a cached pipeline, check house standards, put data under Git LFS. The four LLM-eval commands live in the separate oryxeval plugin.
+description: "oryxflow Claude Code plugin slash commands: scaffold a project, migrate an analysis into a cached pipeline, check house standards and put data under Git LFS."
 ---
 
 # Plugin commands

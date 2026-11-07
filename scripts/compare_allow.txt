@@ -1,5 +1,5 @@
 # Accepted differences between the MkDocs baseline and the Zensical build.
-# Forms: a site path; description:<page>; sitemap-loc:<url>; llms-url:<url>; llms-sections;
+# Forms: a site path; description:<page>; title:<page>; sitemap-loc:<url>; llms-url:<url>; llms-sections;
 # edit-link-prefix:<old>=><new>. See the compare_sites.py docstring for the exact meaning.
 # One entry per line, with a "# reason" line above it.
 
@@ -29,3 +29,89 @@ llms-sections
 # The docs moved from the oryxflow repo into oryxlib-docs, so every "Edit this page" link now
 # points at the new repo; the file path part is unchanged (checked by the prefix rule).
 edit-link-prefix:https://github.com/oryxintel/oryxflow/edit/main/docs/=>https://github.com/oryxintel/oryxlib-docs/edit/main/docs/
+
+# Descriptions rewritten on purpose for crawlers: every page now has a unique 120-160 character
+# description specific to that page, and the blog index, category, archive and pagination pages
+# get their own text instead of repeating the site-wide or blog-index one.
+description:404.html
+description:blog/ai-agents/best-ai-tools-for-data-analysis/index.html
+description:blog/ai-agents/best-claude-code-plugins-for-data-science/index.html
+description:blog/ai-agents/best-practices-ai-assisted-data-analysis/index.html
+description:blog/ai-agents/caching-dag-for-ai-coding-agents/index.html
+description:blog/ai-agents/claude-code-skills-for-data-science/index.html
+description:blog/ai-agents/llm-eval-results-deleted-retention/index.html
+description:blog/ai-agents/llm-evals-are-a-parameter-sweep/index.html
+description:blog/archive/2026/index.html
+description:blog/archive/2026/page/2/index.html
+description:blog/archive/2026/page/3/index.html
+description:blog/caching/cache-intermediate-dataframes-in-python/index.html
+description:blog/caching/parameter-sweeps-without-rerunning/index.html
+description:blog/caching/stop-rerunning-your-pipeline/index.html
+description:blog/category/ai-agents/index.html
+description:blog/category/caching/index.html
+description:blog/category/comparisons/index.html
+description:blog/category/guides/index.html
+description:blog/category/machine-learning/index.html
+description:blog/category/mlops/index.html
+description:blog/category/reproducibility/index.html
+description:blog/comparisons/airflow-alternatives-for-data-science/index.html
+description:blog/comparisons/mlflow-alternatives/index.html
+description:blog/comparisons/oryxflow-vs-airflow/index.html
+description:blog/comparisons/oryxflow-vs-dagster/index.html
+description:blog/comparisons/oryxflow-vs-dvc/index.html
+description:blog/comparisons/oryxflow-vs-pipeline-frameworks/index.html
+description:blog/comparisons/oryxflow-vs-prefect/index.html
+description:blog/guides/cheap-durable-llm-evals/index.html
+description:blog/guides/migrate-from-d6tflow-to-oryxflow/index.html
+description:blog/guides/when-not-to-use-oryxflow/index.html
+description:blog/index.html
+description:blog/machine-learning/why-machine-learning-code-is-bad/index.html
+description:blog/mlops/mlflow-vs-pipeline-caching/index.html
+description:blog/page/2/index.html
+description:blog/page/3/index.html
+description:blog/reproducibility/notebook-to-reproducible-pipeline/index.html
+description:blog/reproducibility/reproducible-data-science-workflows-in-python/index.html
+description:docs/advparam/index.html
+description:docs/advtasksdyn/index.html
+description:docs/ai-ready/index.html
+description:docs/changelog/index.html
+description:docs/claude-code-for-data-science/index.html
+description:docs/claude-plugin/coding-standards/index.html
+description:docs/claude-plugin/commands/index.html
+description:docs/claude-plugin/index.html
+description:docs/claude-plugin/project-structure/index.html
+description:docs/claude-plugin/trust/index.html
+description:docs/claude-plugin/why/index.html
+description:docs/collaborate/index.html
+description:docs/example-ml/index.html
+description:docs/experiment-tracking/index.html
+description:docs/functional_tasks/index.html
+description:docs/glossary/index.html
+description:docs/index.html
+description:docs/installation/index.html
+description:docs/llm-evals-api/index.html
+description:docs/llm-evals-checklist/index.html
+description:docs/llm-evals-prompts/index.html
+description:docs/llm-evals-quickstart/index.html
+description:docs/llm-evals/index.html
+description:docs/logging/index.html
+description:docs/managing-workflows/index.html
+description:docs/migrate-notebook-to-pipeline/index.html
+description:docs/quickstart/index.html
+description:docs/reference/index.html
+description:docs/reports/index.html
+description:docs/run/index.html
+description:docs/supply-chain/index.html
+description:docs/targets/index.html
+description:docs/tasks/index.html
+description:docs/transition/index.html
+description:docs/why-oryxflow/index.html
+description:docs/workflow/index.html
+description:index.html
+
+# Paginated blog listings (blog and archive pages 2 and 3) got a " - Page N" title suffix so no two
+# pages share a title.
+title:blog/archive/2026/page/2/index.html
+title:blog/archive/2026/page/3/index.html
+title:blog/page/2/index.html
+title:blog/page/3/index.html

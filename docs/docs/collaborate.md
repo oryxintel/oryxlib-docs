@@ -1,3 +1,7 @@
+---
+description: "Share oryxflow workflows and outputs: version data with Git LFS, export and import tasks with FlowImport, or bridge separate flows with attach_flow."
+---
+
 # Sharing Workflows and Outputs
 
 ## Introduction

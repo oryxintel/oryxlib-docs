@@ -3,7 +3,7 @@ date: 2026-07-11
 slug: caching-dag-for-ai-coding-agents
 categories:
   - AI agents
-description: AI agents like Claude Code now write real data science pipelines — feature engineering, model training, experiment sweeps. Here's the honest account of where they fail at it, and why a lightweight workflow library removes exactly those failures.
+description: "How to make Claude Code a trustworthy data scientist: where AI agents fail at real pipelines, and why a lightweight workflow library removes those failures."
 faq:
   - q: "How do I trust analysis an AI agent wrote — is it reproducible?"
     a: "Trust comes from structure, not from the agent's confidence. Put the analysis in a DAG that reruns exactly what a code or data change affects and records what ran to a greppable lineage log. oryxflow gives you that: automatic code-change invalidation with downstream propagation, plus a .oryxflow/events.jsonl trail. Reproducible is not the same as correct — the DAG makes a wrong pipeline faithfully reproducible too, so judgment stays yours."

@@ -1,6 +1,6 @@
 ---
 title: oryxeval changelog
-description: Every oryxeval release and what changed in it, newest first.
+description: "oryxeval changelog: every release of the LLM-eval library and what changed in it, newest first, with calver version numbers."
 ---
 
 # oryxeval changelog

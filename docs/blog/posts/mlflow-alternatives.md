@@ -3,7 +3,7 @@ date: 2026-07-23
 slug: mlflow-alternatives
 categories:
   - Comparisons
-description: An honest roundup of MLflow alternatives — Weights & Biases, Neptune, Comet, ClearML, Aim, DVCLive, and SageMaker Experiments — plus where the layer that makes the pipeline underneath them reproducible in the first place fits.
+description: "MLflow alternatives compared: Weights & Biases, Neptune, Comet, ClearML, Aim, DVCLive and SageMaker Experiments, and the pipeline layer beneath a tracker."
 faq:
   - q: "Is there a free, open-source alternative to MLflow?"
     a: "Yes — several. MLflow itself is open-source; among alternatives, ClearML and Aim are open-source and self-hostable at no cost, with Aim being the lightest to run locally. DVCLive is open-source and file-based. oryxflow is open-source too, but it's a different category — the layer that makes the pipeline underneath reproducible, not a tracking dashboard — so it complements these rather than replacing them."

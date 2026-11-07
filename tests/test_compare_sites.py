@@ -11,13 +11,13 @@ _spec.loader.exec_module(cs)
 compare = cs.compare
 
 
-def page(canonical="https://x.dev/", headings=("intro",), desc="d", ld=(), head_extra="", body_extra=""):
+def page(canonical="https://x.dev/", headings=("intro",), desc="d", ld=(), head_extra="", body_extra="", title="t"):
     ld_blocks = "".join(
         f'<script type="application/ld+json">{json.dumps({"@type": t})}</script>' for t in ld
     )
     hs = "".join(f'<h2 id="{h}">{h}</h2>' for h in headings)
     return (
-        f'<html><head><link rel="canonical" href="{canonical}">'
+        f'<html><head><title>{title}</title><link rel="canonical" href="{canonical}">'
         f'<meta name="description" content="{desc}">{ld_blocks}{head_extra}</head>'
         f"<body>{hs}{body_extra}</body></html>"
     )
@@ -281,3 +281,22 @@ def test_edit_link_prefix_allowlist_is_narrow(tmp_path):
     assert run("a", "run.md", "run.md", set())            # not allowed without the entry
     assert not run("b", "run.md", "run.md", rule)         # repo moved, same file: accepted
     assert run("c", "run.md", "other.md", rule)           # different file path: still a problem
+
+
+def test_title_difference_is_a_problem(tmp_path):
+    old, new = two(tmp_path, old_extra={"run/index.html": page(canonical=RUN, title="Run - x")},
+                   new_extra={"run/index.html": page(canonical=RUN, title="Run - y")})
+    probs = compare(old, new, set())
+    assert any("run/index.html" in p and "<title> differs" in p for p in probs)
+
+
+def test_title_difference_allowed_per_page(tmp_path):
+    old, new = two(tmp_path, old_extra={"run/index.html": page(canonical=RUN, title="Run - x")},
+                   new_extra={"run/index.html": page(canonical=RUN, title="Run - y")})
+    assert compare(old, new, {"title:run/index.html"}) == []
+    assert any("<title> differs" in p for p in compare(old, new, {"title:other/index.html"}))
+
+
+def test_equal_titles_pass(tmp_path):
+    old, new = two(tmp_path)
+    assert compare(old, new, set()) == []

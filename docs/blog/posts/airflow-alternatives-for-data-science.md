@@ -3,7 +3,7 @@ date: 2026-07-23
 slug: airflow-alternatives-for-data-science
 categories:
   - Comparisons
-description: An honest roundup of Airflow alternatives for data science — Prefect, Dagster, Luigi, Kedro, Metaflow, Flyte, ZenML, and plain cron — plus where a local layer that makes the research loop trustworthy and reproducible fits when you don't actually need a scheduler.
+description: "Airflow alternatives for data science compared: Prefect, Dagster, Luigi, Kedro, Metaflow, Flyte, ZenML and cron, and when you only need a local caching layer."
 faq:
   - q: "Is Airflow overkill for data science?"
     a: "Often, yes — for the research phase. Airflow shines once a pipeline is stable and needs to run on a schedule with retries and alerting. During active iteration, standing up a scheduler and a metadata database to try one more feature is usually more infrastructure than the work needs. The common, mature pattern is to iterate locally (with a research-loop library like oryxflow, or plain scripts) and adopt Airflow only when the pipeline is ready to be scheduled in production."

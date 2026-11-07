@@ -1,3 +1,7 @@
+---
+description: "oryxflow changelog: every release and what changed in it, newest first. Versions follow calver (YY.M.D) and match oryxflow.__version__."
+---
+
 # Changelog
 
 Every release and what changed in it. Newest first; versions follow calver (`YY.M.D`) and match

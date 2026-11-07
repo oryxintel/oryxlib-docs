@@ -14,6 +14,8 @@ Steps:
   3. Run those doc tests — they fail if a documented example has rotted (an API was
      renamed, a snippet raises, sklearn dropped a dataset, ...).
   4. Build the static site into ./site with `zensical build`.
+  5. SEO check on the built site (scripts/check_seo.py): fails on a missing title, description,
+     canonical or Open Graph tag, or a duplicate title/description; warns on length.
 
 Usage:
     python scripts/build_docs.py                # regenerate tests, run them, build
@@ -240,6 +242,16 @@ def main():
     if args.strict:
         build.append("--strict")
     run(build)
+
+    # Crawler-facing metadata: fail on a missing/duplicate title or description (scripts/check_seo.py).
+    import check_seo
+
+    seo_errors, seo_warnings = check_seo.check_site(ROOT / "site")
+    for w in seo_warnings:
+        print(f"WARNING: {w}", flush=True)
+    if seo_errors:
+        sys.exit("ERROR: SEO check failed:\n  " + "\n  ".join(seo_errors))
+    print(f"SEO check OK ({len(seo_warnings)} warning(s))", flush=True)
 
     # Zensical has no git-revision-date plugin: stamp sitemap <lastmod> and JSON-LD
     # dateModified from git commit dates (see scripts/stamp_lastmod.py).

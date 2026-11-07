@@ -1,6 +1,6 @@
 ---
 title: Migrate a messy notebook project to a pipeline
-description: Turn an out-of-control Jupyter notebook or linear script into a scalable oryxflow pipeline, so a stale intermediate can't produce a confident wrong number.
+description: "Migrate a messy Jupyter notebook or linear script into an oryxflow pipeline so a stale intermediate can't produce a confident wrong number."
 faq:
   - q: "How do I restructure a messy data-science project into a pipeline?"
     a: "Read the notebook or script first and cut it at its seams: every block that consumes some inputs and produces an intermediate — a loaded frame, a cleaned frame, a feature matrix, a fitted model — becomes one task, named for the intermediate it produces. Wire the tasks with @oryxflow.requires, end each run() with self.save(), and hoist the magic constants into parameters. Then build the tasks up in dependency order, running the flow after each one, so a break surfaces at the task that caused it instead of five tasks later."

@@ -1,6 +1,6 @@
 ---
 title: Experiment tracking with oryxflow
-description: An experiment tracker (MLflow, W&B) and oryxflow do different halves of the same project — how to use both, with tracker logging inside oryxflow tasks so every logged run is a reproducible one.
+description: "Use an experiment tracker (MLflow, W&B) with oryxflow: log inside oryxflow tasks so every tracked run is reproducible. How the two split the work."
 faq:
   - q: "Can I use oryxflow and MLflow together?"
     a: "Yes, and that's the recommended setup — not a compromise. Put your tracker's logging calls inside an oryxflow task's run(), so every row in your tracker corresponds to a reproducible computation you can rebuild rather than a run you can't, while MLflow (or Weights & Biases, Neptune, Comet) keeps the searchable record of what each run scored. oryxflow works out what a change has invalidated and reuses the rest, so the record stays honest without costing you rerun time."

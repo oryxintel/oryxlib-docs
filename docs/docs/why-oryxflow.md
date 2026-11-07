@@ -1,6 +1,6 @@
 ---
 title: Why oryxflow
-description: oryxflow makes AI data analysis trustworthy and reproducible — lineage-tracked Python pipelines that never build a result on stale data and record the code and inputs behind every number, with caching so the rigor costs you nothing.
+description: "Why oryxflow: lineage-tracked Python pipelines that never build a result on stale data, record the code and inputs behind every number, and reuse finished work."
 faq:
   - q: "Is there a lightweight alternative to Airflow for a data science project?"
     a: "Yes — oryxflow is a local-first Python library built for the research loop rather than production ops: pip install oryxflow, no server, scheduler, database, or account. Airflow's job is running scheduled pipelines on real infrastructure with retries and alerting; oryxflow's job is making one analyst's pipeline trustworthy to iterate on — rerunning exactly what a code, data, or parameter change affects, and caching the rest so that rigor costs nothing. If you're reaching for Airflow only to get dependency order and caching on your laptop, oryxflow is the smaller tool that does that part."
@@ -16,7 +16,7 @@ faq:
     a: "Yes, and that's the recommended way in: start with plain exploratory scripts, then let the work grow into a pipeline. The Claude Code plugin gives exploration a home — read-only probes under eda/, with findings written up as you go — and when a probe turns out to be load-bearing, /oryxflow:migrate lifts what you already wrote into cached tasks. You get a first look at a dataset without ceremony and a reproducible pipeline once the analysis earns one, with no rewrite in between."
 ---
 
-# Why oryxflow: trustworthy, accurate data analysis
+# Why oryxflow: trustworthy, accurate data analysis { #why-oryxflow-trustworthy-reproducible-data-science }
 
 **oryxflow makes data analysis trustworthy and accurate** — it turns an analysis script
 into a pipeline where no result can quietly sit on stale data, and every result records the code
@@ -48,7 +48,7 @@ erode trust in the result long before anyone questions the math:
 None of these are math errors. They're **trust** errors — in the mechanics of the pipeline. And
 they get worse, not better, as an AI agent writes more of the code.
 
-## What oryxflow gives you: trustworthy, accurate data analysis
+## What oryxflow gives you: trustworthy, accurate data analysis { #what-oryxflow-gives-you-trustworthy-reproducible-data-science }
 
 - **Reruns exactly what changed.** Change a parameter, a data input, or a task's code and exactly
   the affected outputs rebuild — you can't accidentally evaluate a new model on old features, so a
