@@ -1,4 +1,5 @@
 # Accepted differences between the MkDocs baseline and the Zensical build.
+# Forms: a site path; description:<page>; sitemap-loc:<url>; llms-url:<url>; llms-sections.
 # One entry per line, with a "# reason" line above it.
 
 # Zensical bundles the mkdocstrings stylesheet rules into its main theme CSS
@@ -10,3 +11,16 @@ assets/_mkdocstrings.css
 # <meta> attribute, so browsers truncated it to 'Four slash commands turn '. Zensical
 # escapes it (&quot;) and the full description now reaches crawlers: a fix, not a loss.
 description:docs/claude-plugin/evals/index.html
+
+# New page: the oryxeval changelog (the oryxeval tab), from the committed _external snapshot.
+docs/llm-evals-changelog/index.html
+sitemap-loc:https://docs.oryxflow.dev/docs/llm-evals-changelog/
+llms-url:https://docs.oryxflow.dev/docs/llm-evals-changelog/index.md
+
+# example-ml.md was in the nav but never listed in an llmstxt section, so it was missing from
+# llms.txt; the per-tab sections now include it (a fix).
+llms-url:https://docs.oryxflow.dev/docs/example-ml/index.md
+
+# llms.txt sections now mirror the product tabs (oryxflow, Knowledge, oryxeval, Claude Code, Blog)
+# instead of the old Getting started / Guide / Advanced / ... headings. Intended restructure.
+llms-sections

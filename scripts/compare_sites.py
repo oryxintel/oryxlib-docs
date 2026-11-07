@@ -9,6 +9,9 @@ Exit code 1 when any problem is found. ``--allow`` names a file with one
 site-relative path per line (``#`` comments allowed) that may differ between the sites:
 a path present only in NEW, or only in OLD for a non-page file (a generator replaced it).
 A line ``description:<page path>`` accepts a differing meta description on that page.
+``sitemap-loc:<url>`` accepts that <loc> as present only in NEW, ``llms-url:<url>`` accepts
+that URL as present only in NEW's llms.txt, and a bare ``llms-sections`` line accepts changed
+llms.txt section headings (a deliberate restructure). Nothing missing from NEW is ever allowed.
 """
 from __future__ import annotations
 
@@ -167,7 +170,7 @@ def _rule_exact_files(old: Path, new: Path):
     return probs
 
 
-def _rule_sitemap(old: Path, new: Path):
+def _rule_sitemap(old: Path, new: Path, allow=frozenset()):
     o, n = old / "sitemap.xml", new / "sitemap.xml"
     if not o.is_file():
         return []
@@ -180,7 +183,8 @@ def _rule_sitemap(old: Path, new: Path):
     if lo == ln:
         return []
     out = [f"sitemap.xml: <loc> missing from new: {u}" for u in sorted(lo - ln)]
-    out += [f"sitemap.xml: <loc> only in new: {u}" for u in sorted(ln - lo)]
+    out += [f"sitemap.xml: <loc> only in new: {u}" for u in sorted(ln - lo)
+            if f"sitemap-loc:{u}" not in allow]
     return out
 
 
@@ -197,20 +201,22 @@ def _rule_non_page_files(old_all, new_all, allow):
     return probs
 
 
-def _rule_llms(old: Path, new: Path):
+def _rule_llms(old: Path, new: Path, allow=frozenset()):
     o, n = old / "llms.txt", new / "llms.txt"
     if not (o.is_file() and n.is_file()):
         return []  # existence is reported by the non-page-file rule
     (so, uo), (sn, un) = _llms_facts(o), _llms_facts(n)
     probs = []
-    if so != sn:
+    if so != sn and "llms-sections" not in allow:
         probs.append(
             f"llms.txt: section headings differ (missing: {sorted(so - sn)}, extra: {sorted(sn - so)})"
         )
-    if uo != un:
+    missing = sorted(uo - un)
+    extra = sorted(u for u in un - uo if f"llms-url:{u}" not in allow)
+    if missing or extra:
         probs.append(
-            f"llms.txt: linked URLs differ (missing: {_capped(sorted(uo - un))}; "
-            f"extra: {_capped(sorted(un - uo))})"
+            f"llms.txt: linked URLs differ (missing: {_capped(missing)}; "
+            f"extra: {_capped(extra)})"
         )
     return probs
 
@@ -247,8 +253,8 @@ def compare(old: Path, new: Path, allow: set[str]) -> list[str]:
     probs = _rule_pages(old_pages, new_pages, allow)
     probs += _rule_exact_files(old, new)
     probs += _rule_non_page_files(old_all, new_all, allow)
-    probs += _rule_sitemap(old, new)
-    probs += _rule_llms(old, new)
+    probs += _rule_sitemap(old, new, allow)
+    probs += _rule_llms(old, new, allow)
     for page in sorted(set(old_pages) & set(new_pages)):
         probs += _rule_page(page, _parse(old / page), _parse(new / page), allow)
     return probs

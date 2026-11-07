@@ -32,6 +32,23 @@ A site-wide refactor is verified by diffing the built `site/` against a saved ba
 `python scripts/compare_sites.py <baseline-site> site --allow scripts/compare_allow.txt` (0 problems
 expected; every accepted difference is a `# reason` entry in `compare_allow.txt`).
 
+## Site tabs (top navigation)
+
+`navigation.tabs` is on; the top-level `nav` entries in `zensical.toml` are the tabs. Page paths
+(URLs) do not follow the tabs: the tab is only a grouping.
+
+| Tab | Pages |
+| --- | --- |
+| Home | `index.md` |
+| oryxflow | `docs/index.md`, why, installation, quickstart, Guide, Advanced, Example (ML), glossary, supply chain, API reference, changelog |
+| Knowledge | `docs/collaborate.md` |
+| oryxeval | the five `docs/llm-evals*.md` pages, `docs/claude-plugin/evals.md`, `docs/llm-evals-changelog.md` |
+| Claude Code | the plugin pages under `docs/claude-plugin/` (minus `evals.md`), `claude-code-for-data-science.md`, `ai-ready.md` |
+| Blog | `blog/index.md` |
+
+The `llmstxt` `sections` mirror the tabs one to one (Blog last): a new page goes in both `nav`
+and `sections`.
+
 ## Layout
 
 URL layout: `/` = landing (`docs/index.md`), `/docs/*` = the guide + reference (files in
@@ -51,8 +68,8 @@ docs/                          # docs_dir
     why-oryxflow.md            #   positioning / overview page (trust-led, GEO-shaped)
     installation.md quickstart.md tasks.md workflow.md run.md targets.md logging.md
     collaborate.md managing-workflows.md advtasksdyn.md advparam.md functional_tasks.md
-    example-ml.md
-    claude-plugin/             #   "Build with Claude Code" section (top-level nav)
+    example-ml.md llm-evals*.md   #   llm-evals-changelog.md includes _external/oryxeval/CHANGELOG.md
+    claude-plugin/             #   "Claude Code" tab
       index.md commands.md why.md   #   plugin section landing + commands + matched-pair rationale
     reference.md               #   API reference, generated from docstrings via mkdocstrings
     changelog.md               #   includes _external/oryxflow/CHANGELOG.md via a pymdownx snippet

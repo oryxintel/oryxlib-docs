@@ -51,7 +51,7 @@ oryxflow-docs-graph.png
 
 nav = [
     { "Home" = "index.md" },
-    { "Docs" = [
+    { "oryxflow" = [
         "docs/index.md",
         { "Why oryxflow" = "docs/why-oryxflow.md" },
         { "Installation" = "docs/installation.md" },
@@ -65,7 +65,6 @@ nav = [
             { "Task I/O formats" = "docs/targets.md" },
             { "Reports from notebooks" = "docs/reports.md" },
             { "Logging" = "docs/logging.md" },
-            { "Collaborate & share flows" = "docs/collaborate.md" },
             { "Managing complex workflows" = "docs/managing-workflows.md" },
             { "Experiment tracking (MLflow, W&B)" = "docs/experiment-tracking.md" },
         ] },
@@ -74,21 +73,25 @@ nav = [
             { "Parameters" = "docs/advparam.md" },
             { "Functional API" = "docs/functional_tasks.md" },
         ] },
-        { "LLM evals (oryxeval)" = [
-            { "Quickstart" = "docs/llm-evals-quickstart.md" },
-            { "Guide" = "docs/llm-evals.md" },
-            { "Prompt files" = "docs/llm-evals-prompts.md" },
-            { "Classes and functions" = "docs/llm-evals-api.md" },
-            { "What a plan must contain" = "docs/llm-evals-checklist.md" },
-            { "Scaffold with Claude Code" = "docs/claude-plugin/evals.md" },
-        ] },
         { "Example (ML)" = "docs/example-ml.md" },
         { "Glossary" = "docs/glossary.md" },
         { "Security & supply chain" = "docs/supply-chain.md" },
         { "API Reference" = "docs/reference.md" },
         { "Changelog" = "docs/changelog.md" },
     ] },
-    { "Build with Claude Code" = [
+    { "Knowledge" = [
+        { "Collaborate & share flows" = "docs/collaborate.md" },
+    ] },
+    { "oryxeval" = [
+        { "Quickstart" = "docs/llm-evals-quickstart.md" },
+        { "Guide" = "docs/llm-evals.md" },
+        { "Prompt files" = "docs/llm-evals-prompts.md" },
+        { "Classes and functions" = "docs/llm-evals-api.md" },
+        { "What a plan must contain" = "docs/llm-evals-checklist.md" },
+        { "Scaffold with Claude Code" = "docs/claude-plugin/evals.md" },
+        { "Changelog" = "docs/llm-evals-changelog.md" },
+    ] },
+    { "Claude Code" = [
         { "Claude Code for data science" = "docs/claude-code-for-data-science.md" },
         { "Built for AI coding agents" = "docs/ai-ready.md" },
         "docs/claude-plugin/index.md",
@@ -100,7 +103,8 @@ nav = [
     ] },
     { "Blog" = [
         "blog/index.md",
-    ] },]
+    ] },
+]
 
 # Link validation: broken pages/anchors are reported (warnings; the build does not fail).
 # Zensical validates links and anchors only; the MkDocs omitted_files / absolute_links /
@@ -125,6 +129,7 @@ favicon = "assets/favicon.ico"
 # sets --md-text-font / --md-code-font in their place. Keep the two in sync.
 font = false
 features = [
+    "navigation.tabs",
     "navigation.instant",
     "navigation.tracking",
     "navigation.sections",
@@ -223,14 +228,12 @@ output; the engine runs the DAG in dependency order, skips tasks whose output al
 exists, and reruns exactly what a parameter, data, or code change affects."""
 
 [project.plugins.llmstxt.sections]
-"Getting started" = [
+"oryxflow" = [
     "index.md",
     "docs/index.md",
     "docs/why-oryxflow.md",
     "docs/installation.md",
     "docs/quickstart.md",
-]
-"Guide" = [
     "docs/transition.md",
     "docs/migrate-notebook-to-pipeline.md",
     "docs/tasks.md",
@@ -239,24 +242,30 @@ exists, and reruns exactly what a parameter, data, or code change affects."""
     "docs/targets.md",
     "docs/reports.md",
     "docs/logging.md",
-    "docs/collaborate.md",
     "docs/managing-workflows.md",
     "docs/experiment-tracking.md",
-]
-"Advanced" = [
     "docs/advtasksdyn.md",
     "docs/advparam.md",
     "docs/functional_tasks.md",
+    "docs/example-ml.md",
+    "docs/glossary.md",
+    "docs/supply-chain.md",
+    "docs/reference.md",
+    "docs/changelog.md",
 ]
-"LLM evals (oryxeval)" = [
+"Knowledge" = [
+    "docs/collaborate.md",
+]
+"oryxeval" = [
     "docs/llm-evals-quickstart.md",
     "docs/llm-evals.md",
     "docs/llm-evals-prompts.md",
     "docs/llm-evals-api.md",
     "docs/llm-evals-checklist.md",
     "docs/claude-plugin/evals.md",
+    "docs/llm-evals-changelog.md",
 ]
-"Build with Claude Code" = [
+"Claude Code" = [
     "docs/claude-code-for-data-science.md",
     "docs/ai-ready.md",
     "docs/claude-plugin/index.md",
@@ -265,12 +274,6 @@ exists, and reruns exactly what a parameter, data, or code change affects."""
     "docs/claude-plugin/project-structure.md",
     "docs/claude-plugin/coding-standards.md",
     "docs/claude-plugin/why.md",
-]
-"Reference" = [
-    "docs/glossary.md",
-    "docs/supply-chain.md",
-    "docs/reference.md",
-    "docs/changelog.md",
 ]
 "Blog" = [
     "blog/index.md",

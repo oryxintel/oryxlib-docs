@@ -249,3 +249,19 @@ def test_description_difference_allowed_per_page(tmp_path):
     assert compare(old, new, {"description:run/index.html"}) == []
     # the allowance is per page: another page's difference is still reported
     assert any("meta description" in p for p in compare(old, new, {"description:other/index.html"}))
+
+
+def test_allow_sitemap_loc_and_llms_forms(tmp_path):
+    txt = "# t\n\n## Old\n\n- [a](https://x.dev/a/index.md)\n"
+    new_txt = "# t\n\n## New\n\n- [a](https://x.dev/a/index.md)\n- [b](https://x.dev/b/index.md)\n"
+    new_map = sitemap("https://x.dev/", "https://x.dev/run/", "https://x.dev/b/")
+    old, new = two(tmp_path, old_extra={"llms.txt": txt},
+                   new_extra={"llms.txt": new_txt, "sitemap.xml": new_map})
+    probs = compare(old, new, set())
+    assert any("sitemap.xml" in p for p in probs) and any("section headings" in p for p in probs)
+    assert any("linked URLs" in p for p in probs)
+    allow = {"sitemap-loc:https://x.dev/b/", "llms-sections", "llms-url:https://x.dev/b/index.md"}
+    assert compare(old, new, allow) == []
+    # the allowance is exact: another extra URL is still reported
+    assert compare(old, new, {"sitemap-loc:https://x.dev/other/", "llms-sections",
+                              "llms-url:https://x.dev/b/index.md"}) != []
