@@ -237,3 +237,15 @@ def test_json_ld_graph_types_found(tmp_path):
 def test_malformed_sitemap_reported_not_raised(tmp_path):
     old, new = two(tmp_path, new_extra={"sitemap.xml": "<urlset><url>"})
     assert any("sitemap.xml" in p for p in compare(old, new, set()))
+
+
+def test_description_difference_allowed_per_page(tmp_path):
+    old, new = two(
+        tmp_path,
+        old_extra={"run/index.html": page(canonical=RUN, desc="a")},
+        new_extra={"run/index.html": page(canonical=RUN, desc="b")},
+    )
+    assert any("meta description" in p for p in compare(old, new, set()))
+    assert compare(old, new, {"description:run/index.html"}) == []
+    # the allowance is per page: another page's difference is still reported
+    assert any("meta description" in p for p in compare(old, new, {"description:other/index.html"}))

@@ -1,0 +1,12 @@
+# Accepted differences between the MkDocs baseline and the Zensical build.
+# One entry per line, with a "# reason" line above it.
+
+# Zensical bundles the mkdocstrings stylesheet rules into its main theme CSS
+# (verified: .doc-contents td code, .doc-md-description, .doc-param-default are present),
+# so the separate file is no longer emitted or linked.
+assets/_mkdocstrings.css
+
+# The page description contains double quotes. MkDocs/Material did not escape them in the
+# <meta> attribute, so browsers truncated it to 'Four slash commands turn '. Zensical
+# escapes it (&quot;) and the full description now reaches crawlers: a fix, not a loss.
+description:docs/claude-plugin/evals/index.html

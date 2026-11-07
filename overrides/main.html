@@ -31,7 +31,7 @@
       stars/forks/latest-release from api.github.com, and without a preconnect that
       DNS+TLS handshake sits on the critical path (Lighthouse: ~320ms LCP savings). -#}
   <link rel="preconnect" href="https://api.github.com" crossorigin>
-  {% if page and page.is_homepage %}
+  {% if page and (page.is_homepage or page.url in ('', './', '/')) %}
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -44,7 +44,7 @@
         "applicationSubCategory": "Data-science pipeline & workflow library",
         "operatingSystem": "Windows, macOS, Linux",
         "description": "oryxflow is an open-source Python library and Claude Code plugin that makes AI data analysis faster, cheaper, and more trustworthy: declare your analysis as cached, reproducible tasks and the engine reruns exactly what a parameter, data, or code change affects.",
-        "dateModified": {{ page.meta.git_revision_date_localized | tojson }},
+        {% if page.meta and page.meta.git_revision_date_localized %}"dateModified": {{ page.meta.git_revision_date_localized | tojson }},{% endif %}
         "url": "https://docs.oryxflow.dev/",
         "downloadUrl": "https://pypi.org/project/oryxflow/",
         "installUrl": "https://pypi.org/project/oryxflow/",
@@ -76,7 +76,7 @@
   }
   </script>
   {% endif %}
-  {% if page and not page.is_homepage %}
+  {% if page and not (page.is_homepage or page.url in ('', './', '/')) %}
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",

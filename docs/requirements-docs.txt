@@ -1,11 +1,14 @@
-# Documentation toolchain (MkDocs site + doc-example tests).
-# Install with:  pip install -r docs/requirements-docs.txt
-# The oryxflow package itself must also be installed (pip install -e .) because the
-# API Reference page introspects it via mkdocstrings.
-mkdocs-material>=9.5
-mkdocs-llmstxt>=0.2
-mkdocstrings[python]>=0.26
-mkdocs-git-revision-date-localized-plugin>=1.2
+# Documentation toolchain (Zensical site + doc-example tests).
+# Install with:  pip install ../oryxflow -r docs/requirements-docs.txt
+# The oryxflow package itself must also be installed (non-editable, from the sibling
+# checkout) because the API Reference page introspects it via mkdocstrings.
+# Zensical bundles the theme (no mkdocs-material needed) and reads mkdocs.yml.
+zensical>=0.1,<0.2
+mkdocstrings-python
+# mkdocs is not used to build; it is kept for the plugin libraries (llmstxt, mkdocstrings)
+# that import its config types.
+mkdocs>=1.6,<2
+mkdocs-llmstxt
 phmdoctest>=1.4
 
 # Needed to run the doc-example tests: the quickstart ML pipeline example uses scikit-learn.

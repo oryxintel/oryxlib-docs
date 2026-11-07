@@ -1,7 +1,7 @@
-# mkdocs.yml — oryxflow documentation site (Material for MkDocs)
+# mkdocs.yml — oryxflow documentation site (built with Zensical, which reads this file)
 #
-# Build:   mkdocs serve            # live preview at http://127.0.0.1:8000
-#          mkdocs build --strict   # production build into ./site (CI uses this)
+# Build:   python scripts/build_docs.py   # fetch sources, doc tests, zensical build into ./site
+#          zensical serve                 # live preview at http://127.0.0.1:8000
 # Deps:    pip install -r docs/requirements-docs.txt
 #
 # site_url is the CANONICAL origin. The docs live on the docs.oryxflow.dev subdomain (not
@@ -30,6 +30,9 @@ docs_dir: docs
 
 theme:
   name: material
+  # Zensical's default is the new "modern" look; "classic" keeps the Material-for-MkDocs
+  # appearance this site (and extra.css) was built against.
+  variant: classic
   custom_dir: overrides
   logo: assets/logo-oryx.png
   favicon: assets/favicon.ico
@@ -118,19 +121,12 @@ plugins:
       # teasers that link to each post, never the full bodies inline.
       post_excerpt: required
       post_readtime: true
-  - git-revision-date-localized:
-      type: iso_date
-      fallback_to_build_date: true
-      enable_creation_date: true
-      # Avoid the noisy "first revision older than last revision" warnings that
-      # `git log --follow` produces for renamed/moved files (the whole tree was
-      # just migrated). Dates still come from real commits once files are committed.
-      enable_git_follow: false
   - mkdocstrings:
       default_handler: python
       handlers:
         python:
-          paths: [.]
+          # No `paths`: the API page documents the installed oryxflow package
+          # (pip install ../oryxflow), which griffe finds on sys.path.
           options:
             docstring_style: google
             show_root_heading: true

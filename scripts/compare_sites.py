@@ -6,7 +6,9 @@ same SEO / structured data, same anchors, same assets.
     python scripts/compare_sites.py OLD NEW [--allow FILE]
 
 Exit code 1 when any problem is found. ``--allow`` names a file with one
-site-relative path per line (``#`` comments allowed) that may exist only in NEW.
+site-relative path per line (``#`` comments allowed) that may differ between the sites:
+a path present only in NEW, or only in OLD for a non-page file (a generator replaced it).
+A line ``description:<page path>`` accepts a differing meta description on that page.
 """
 from __future__ import annotations
 
@@ -213,11 +215,11 @@ def _rule_llms(old: Path, new: Path):
     return probs
 
 
-def _rule_page(page, o: _PageInfo, n: _PageInfo):
+def _rule_page(page, o: _PageInfo, n: _PageInfo, allow=frozenset()):
     probs = []
     if o.canonical != n.canonical:
         probs.append(f"{page}: canonical differs (old {o.canonical!r}, new {n.canonical!r})")
-    if o.description != n.description:
+    if o.description != n.description and f"description:{page}" not in allow:
         probs.append(f"{page}: meta description differs (old {o.description!r}, new {n.description!r})")
     missing_ids = [i for i in dict.fromkeys(o.heading_ids) if i not in set(n.heading_ids)]
     if missing_ids:
@@ -248,7 +250,7 @@ def compare(old: Path, new: Path, allow: set[str]) -> list[str]:
     probs += _rule_sitemap(old, new)
     probs += _rule_llms(old, new)
     for page in sorted(set(old_pages) & set(new_pages)):
-        probs += _rule_page(page, _parse(old / page), _parse(new / page))
+        probs += _rule_page(page, _parse(old / page), _parse(new / page), allow)
     return probs
 
 
