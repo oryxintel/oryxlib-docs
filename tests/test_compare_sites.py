@@ -211,3 +211,29 @@ def test_edit_link_must_match(tmp_path):
         new_extra={"run/index.html": page(canonical=RUN, body_extra=edit_old)},
     )
     assert compare(old2, new2, set()) == []
+
+
+def test_json_ld_graph_types_found(tmp_path):
+    graph = (
+        '<script type="application/ld+json">'
+        + json.dumps({"@context": "https://schema.org",
+                      "@graph": [{"@type": "SoftwareApplication"}, {"@type": ["Organization", "Thing"]}]})
+        + "</script>"
+    )
+    old, new = two(
+        tmp_path,
+        old_extra={"index.html": page(head_extra=graph)},
+        new_extra={"index.html": page()},
+    )
+    probs = [p for p in compare(old, new, set()) if "index.html" in p and "SoftwareApplication" in p]
+    assert probs
+    assert any("Organization" in p for p in compare(old, new, set()))
+    # identical graph block: no problem; top-level array also read
+    old2, new2 = two(tmp_path / "m", old_extra={"index.html": page(head_extra=graph)},
+                     new_extra={"index.html": page(head_extra=graph)})
+    assert compare(old2, new2, set()) == []
+
+
+def test_malformed_sitemap_reported_not_raised(tmp_path):
+    old, new = two(tmp_path, new_extra={"sitemap.xml": "<urlset><url>"})
+    assert any("sitemap.xml" in p for p in compare(old, new, set()))

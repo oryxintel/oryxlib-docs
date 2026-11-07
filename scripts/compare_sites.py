@@ -97,7 +97,11 @@ class _PageInfo(HTMLParser):
             data = json.loads(raw)
         except ValueError:
             return
-        for item in data if isinstance(data, list) else [data]:
+        nodes = data if isinstance(data, list) else [data]
+        for item in nodes:
+            if isinstance(item, dict) and isinstance(item.get("@graph"), list):
+                nodes = nodes + item["@graph"]
+        for item in nodes:
             if not isinstance(item, dict):
                 continue
             t = item.get("@type")
@@ -167,7 +171,10 @@ def _rule_sitemap(old: Path, new: Path):
         return []
     if not n.is_file():
         return ["sitemap.xml: missing from new site"]
-    lo, ln = _sitemap_locs(o), _sitemap_locs(n)
+    try:
+        lo, ln = _sitemap_locs(o), _sitemap_locs(n)
+    except ET.ParseError as exc:
+        return [f"sitemap.xml: cannot be parsed as XML ({exc})"]
     if lo == ln:
         return []
     out = [f"sitemap.xml: <loc> missing from new: {u}" for u in sorted(lo - ln)]
