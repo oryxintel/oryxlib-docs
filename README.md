@@ -37,3 +37,15 @@ The build uses the committed changelog snapshots in `_external/` and the oryxflo
 in `docs/requirements-cloudflare.txt`. After a library release, run `devops/sync-release.sh`
 (or `devops\sync-release.ps1`) to refresh both, run the full build, and commit; add `--push` /
 `-Push` to deploy.
+
+### Cutover order (moving the site out of the oryxflow repo)
+
+1. Create the GitHub repo `oryxintel/oryxlib-docs` and push `main`.
+2. Create a NEW Cloudflare Pages project, Git-connected to it, with the build command, output
+   directory and environment variable above.
+3. Check its `*.pages.dev` preview.
+4. Move the custom domain `docs.oryxflow.dev` from the old project (Git-connected to `oryxflow`) to
+   the new one, and confirm the live site.
+5. Disconnect or delete the old project.
+6. Only then merge oryxflow's `chore/move-docs-out`: merging earlier breaks the old project's
+   builds while it still serves the domain.

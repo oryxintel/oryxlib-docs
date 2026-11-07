@@ -265,3 +265,19 @@ def test_allow_sitemap_loc_and_llms_forms(tmp_path):
     # the allowance is exact: another extra URL is still reported
     assert compare(old, new, {"sitemap-loc:https://x.dev/other/", "llms-sections",
                               "llms-url:https://x.dev/b/index.md"}) != []
+
+
+def test_edit_link_prefix_allowlist_is_narrow(tmp_path):
+    def hrefs(repo, name):
+        return f'<a href="https://gh/{repo}/edit/main/docs/{name}" title="Edit this page" class="md-content__button">e</a>'
+
+    rule = {"edit-link-prefix:https://gh/old/edit/=>https://gh/new/edit/"}
+
+    def run(sub, old_name, new_name, allow):
+        old = write(tmp_path / sub / "o", base_files() | {"run/index.html": page(canonical=RUN, body_extra=hrefs("old", old_name))})
+        new = write(tmp_path / sub / "n", base_files() | {"run/index.html": page(canonical=RUN, body_extra=hrefs("new", new_name))})
+        return [p for p in compare(old, new, allow) if "edit" in p.lower()]
+
+    assert run("a", "run.md", "run.md", set())            # not allowed without the entry
+    assert not run("b", "run.md", "run.md", rule)         # repo moved, same file: accepted
+    assert run("c", "run.md", "other.md", rule)           # different file path: still a problem

@@ -57,7 +57,7 @@ live in the `docs/docs/` subfolder to get the `/docs/` prefix.
 
 ```
 zensical.toml                 # site config: theme (black header, blue links, logo), nav, plugins
-overrides/                     # theme overrides (main.html: JSON-LD, FAQ; sitemap.xml)
+overrides/                     # theme overrides (main.html: JSON-LD, FAQ)
 _external/                     # COMMITTED changelog snapshots of oryxflow/oryxeval (see Releasing)
 devops/sync-release.sh / .ps1  # sync + build + commit after a library release
 docs/                          # docs_dir
@@ -129,8 +129,10 @@ mark its runnable blocks with `<!--phmdoctest-share-names-->`, add it to `TESTED
 python scripts/build_docs.py         # regenerate tests/test_docs_*.py, run them, build the site
 ```
 
-Commit the regenerated `tests/test_docs_*.py`. CI runs `python scripts/build_docs.py --check`,
-which fails if the committed generated files are stale relative to the Markdown.
+Commit the regenerated `tests/test_docs_*.py`. CI does NOT gate on staleness (it does not run
+`build_docs.py --check`, deliberately): phmdoctest names tests by source line, so a stale file is
+bookkeeping churn, not a behaviour change; the pre-commit hook below regenerates them. `--check`
+still exists for a manual look.
 
 **A pre-commit hook does this for you — install it once per clone:**
 
@@ -140,12 +142,11 @@ pip install pre-commit && pre-commit install
 
 Why it exists: phmdoctest names each generated test after its code block's **source line**
 (`test_code_66`), so editing **prose above a code block** renames the test and leaves the
-committed file stale — no behavior change, pure churn, and it fails CI's `--check` on a docs-only
-PR. The `docs-regen` hook (`.pre-commit-config.yaml`) runs `build_docs.py --regen` — front-matter
+committed file stale — no behavior change, pure churn (CI does not gate on it). The `docs-regen` hook (`.pre-commit-config.yaml`) runs `build_docs.py --regen` — front-matter
 validation plus regeneration only, no pytest and no site build, so it stays ~1s. When it
 rewrites a file, pre-commit reports *"files were modified by this hook"* and aborts; `git add` the
 regenerated tests and commit again. Without `pre-commit install` the config does nothing and
-you're back to remembering — CI still catches it, just later.
+you're back to remembering, and the generated files drift until the next regeneration.
 
 Isolation gotcha: doc examples use the default output directory, the relative path `data/` —
 don't add `oryxflow.set_dir('data/')` to an example, it's a no-op that contradicts the "nothing to
@@ -185,8 +186,10 @@ them, update that page in the same commit:
 `python scripts/build_docs.py` writes `./site`, including:
 
 - `sitemap.xml` — `<lastmod>` and the JSON-LD `dateModified` are stamped from git commit dates by
-  `scripts/stamp_lastmod.py` after the build. Needs real git history (CI uses `fetch-depth: 0`);
-  uncommitted files fall back to the build date.
+  `scripts/stamp_lastmod.py` after the build. Needs real git history: CI uses `fetch-depth: 0`,
+  and Cloudflare Pages clones shallowly, so the stamping step runs `git fetch --unshallow` first
+  (it prints that it did). If the repo is still shallow after that, stamping is skipped with a loud
+  WARNING (never HEAD's date on every page). Uncommitted files are skipped (no lastmod).
 - `llms.txt` — the sectioned index for AI agents (sections defined under the `llmstxt` plugin in
   `zensical.toml`).
 - `llms-full.txt` — the entire docs concatenated into one file for single-request ingestion.

@@ -118,3 +118,49 @@ def test_generated_blog_pages_use_newest_post_date(tmp_path):
     assert d["blog/page/2/"] == "2026-06-06"
     assert d["blog/archive/2025/"] == "2025-05-05"
     assert d["blog/archive/2026/page/3/"] == "2026-06-06"
+
+
+def test_string_categories_is_one_category(tmp_path):
+    docs = tmp_path / "docs"
+    post = docs / "blog" / "posts" / "p.md"
+    _write(post, "---\ndate: 2026-01-01\nslug: s\ncategories: LLM evals\n---\nbody\n")
+    assert sl.url_for_source(post, docs) == "blog/llm-evals/s/"
+
+
+def test_shallow_clone_without_unshallow_is_skipped(tmp_path, capsys):
+    origin = tmp_path / "origin"
+    origin.mkdir()
+    subprocess.run(["git", "init", "-q", "-b", "main", str(origin)], check=True)
+    _write(origin / "docs" / "a.md", "one\n")
+    _git(origin, "add", ".")
+    _git(origin, "commit", "-qm", "1", date="2020-01-01")
+    _write(origin / "docs" / "a.md", "two\n")
+    _git(origin, "commit", "-qam", "2", date="2021-01-01")
+    clone = tmp_path / "clone"
+    subprocess.run(["git", "clone", "-q", "--depth", "1", origin.as_uri(), str(clone)], check=True)
+    assert sl.is_shallow(clone)
+    # make unshallowing impossible: the remote disappears
+    _git(clone, "remote", "set-url", "origin", (tmp_path / "gone").as_uri())
+    assert sl.ensure_full_history(clone) is False
+    assert "WARNING" in capsys.readouterr().out
+    site = tmp_path / "site"
+    _write(site / "sitemap.xml", f"<urlset><url><loc>{BASE}/a/</loc></url></urlset>")
+    before = (site / "sitemap.xml").read_text()
+    sl.main([str(site), str(clone / "docs")])
+    assert (site / "sitemap.xml").read_text() == before
+
+
+def test_shallow_clone_is_unshallowed_when_possible(tmp_path):
+    origin = tmp_path / "origin"
+    origin.mkdir()
+    subprocess.run(["git", "init", "-q", "-b", "main", str(origin)], check=True)
+    _write(origin / "docs" / "a.md", "one\n")
+    _git(origin, "add", ".")
+    _git(origin, "commit", "-qm", "1", date="2020-01-01")
+    _write(origin / "other.txt", "x\n")
+    _git(origin, "add", ".")
+    _git(origin, "commit", "-qm", "2", date="2021-01-01")
+    clone = tmp_path / "clone"
+    subprocess.run(["git", "clone", "-q", "--depth", "1", origin.as_uri(), str(clone)], check=True)
+    assert sl.ensure_full_history(clone) is True
+    assert sl.git_date(clone / "docs" / "a.md", clone) == "2020-01-01"

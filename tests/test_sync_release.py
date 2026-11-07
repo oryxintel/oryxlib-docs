@@ -62,3 +62,18 @@ def test_sync_names_missing_sibling(tmp_path):
     with pytest.raises(SystemExit) as exc:
         sr.sync(tmp_path / "none", tmp_path)
     assert "oryxflow" in str(exc.value)
+
+
+def test_sibling_warnings():
+    assert sr.sibling_warnings("main", "", "oryxflow") == []
+    assert sr.sibling_warnings(None, None, "oryxflow") == []
+    w = sr.sibling_warnings("feature", " M CHANGELOG.md", "oryxeval")
+    assert len(w) == 2 and "feature" in w[0] and "uncommitted" in w[1]
+
+
+def test_pypi_warning():
+    out = "oryxflow (26.11.6)"+chr(10)+"Available versions: 26.11.6, 26.7.21"+chr(10)
+    assert sr.pypi_warning("26.11.6", out) is None
+    assert "not on PyPI" in sr.pypi_warning("26.12.1", out)
+    assert sr.pypi_warning("26.12.1", None) is None
+    assert sr.pypi_warning("26.12.1", "garbage") is None

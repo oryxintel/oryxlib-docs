@@ -5,13 +5,21 @@ same SEO / structured data, same anchors, same assets.
 
     python scripts/compare_sites.py OLD NEW [--allow FILE]
 
-Exit code 1 when any problem is found. ``--allow`` names a file with one
-site-relative path per line (``#`` comments allowed) that may differ between the sites:
-a path present only in NEW, or only in OLD for a non-page file (a generator replaced it).
-A line ``description:<page path>`` accepts a differing meta description on that page.
-``sitemap-loc:<url>`` accepts that <loc> as present only in NEW, ``llms-url:<url>`` accepts
-that URL as present only in NEW's llms.txt, and a bare ``llms-sections`` line accepts changed
-llms.txt section headings (a deliberate restructure). Nothing missing from NEW is ever allowed.
+Exit code 1 when any problem is found. ``--allow`` names a file with one entry per line
+(``#`` comments and blank lines ignored). Every entry accepts one specific difference:
+
+* ``<site-relative path>`` (bare path): that file may be present only in NEW (an added page
+  or asset), or present only in OLD when it is a non-page file (a generator replaced it).
+  A page (.html) missing from NEW is never allowed.
+* ``description:<page path>``: that page's meta description may differ.
+* ``sitemap-loc:<url>``: that <loc> may be present only in NEW's sitemap.
+* ``llms-url:<url>``: that URL may be present only in NEW's llms.txt.
+* ``llms-sections``: llms.txt section headings may differ (a deliberate restructure).
+* ``edit-link-prefix:<old>=><new>``: an "Edit this page" href starting with <old> in OLD
+  may appear as the same href with <old> replaced by <new> in NEW (the edit link's
+  host/repo moved; the file path part must be unchanged).
+
+Anything else missing from NEW (pages, sitemap URLs, llms URLs, headings, ...) is a problem.
 """
 from __future__ import annotations
 
@@ -237,10 +245,22 @@ def _rule_page(page, o: _PageInfo, n: _PageInfo, allow=frozenset()):
         probs.append(f"{page}: JSON-LD @type {t} lost in new (old x{o.ld_types[t]}, new x{n.ld_types[t]})")
     for asset in sorted(o.assets - n.assets):
         probs.append(f"{page}: theme asset {asset} no longer referenced in new")
-    missing_edit = sorted(o.edit_hrefs - n.edit_hrefs)
+    missing_edit = sorted(h for h in o.edit_hrefs - n.edit_hrefs
+                          if not _edit_link_moved(h, n.edit_hrefs, allow))
     if missing_edit:
         probs.append(f"{page}: edit link missing or changed in new (old href(s): {', '.join(missing_edit)})")
     return probs
+
+
+def _edit_link_moved(href: str, new_hrefs, allow) -> bool:
+    """True if an `edit-link-prefix:<old>=><new>` entry maps href onto one of new_hrefs."""
+    for entry in allow:
+        if not entry.startswith("edit-link-prefix:") or "=>" not in entry:
+            continue
+        old_p, new_p = entry[len("edit-link-prefix:"):].split("=>", 1)
+        if old_p and href.startswith(old_p) and new_p + href[len(old_p):] in new_hrefs:
+            return True
+    return False
 
 
 def compare(old: Path, new: Path, allow: set[str]) -> list[str]:

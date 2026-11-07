@@ -30,3 +30,17 @@ must update pages here. This repo is separate: work in `../oryxlib-docs`, using 
   `Sync docs with oryxflow X / oryxeval Y` and pushes `main`, which redeploys the site. Without
   `--push` it only commits. Ask the human before pushing.
 - **Not published:** this file sits outside `docs/`, so it is not part of the site.
+
+## Cutover from the oryxflow repo (one-time, in this order)
+
+The site used to build from the `oryxflow` repo; it now builds from this one. Do not reorder:
+
+1. Create the GitHub repo `oryxintel/oryxlib-docs` and push `main`.
+2. Create a NEW Cloudflare Pages project, Git-connected to it, with the build command, output
+   directory and environment variable (see README.md, Deploy).
+3. Check its `*.pages.dev` preview.
+4. Move the custom domain `docs.oryxflow.dev` from the old project (Git-connected to `oryxflow`) to
+   the new one, and confirm the live site.
+5. Disconnect or delete the old project.
+6. Only then merge oryxflow's `chore/move-docs-out`: merging earlier breaks the old project's
+   builds while it still serves the domain.

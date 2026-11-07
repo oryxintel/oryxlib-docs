@@ -246,6 +246,9 @@ def main():
     import stamp_lastmod
 
     docs = ROOT / "docs"
+    if not stamp_lastmod.ensure_full_history(ROOT):
+        print("\nOK (WARNING: dates not stamped): site built to ./site", flush=True)
+        return
     n_loc = stamp_lastmod.stamp_lastmod(ROOT / "site", docs)
     n_mod = stamp_lastmod.stamp_date_modified(ROOT / "site", docs)
     print(f"stamped <lastmod> on {n_loc} sitemap entries, dateModified on {n_mod} pages", flush=True)

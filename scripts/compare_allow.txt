@@ -1,5 +1,6 @@
 # Accepted differences between the MkDocs baseline and the Zensical build.
-# Forms: a site path; description:<page>; sitemap-loc:<url>; llms-url:<url>; llms-sections.
+# Forms: a site path; description:<page>; sitemap-loc:<url>; llms-url:<url>; llms-sections;
+# edit-link-prefix:<old>=><new>. See the compare_sites.py docstring for the exact meaning.
 # One entry per line, with a "# reason" line above it.
 
 # Zensical bundles the mkdocstrings stylesheet rules into its main theme CSS
@@ -24,3 +25,7 @@ llms-url:https://docs.oryxflow.dev/docs/example-ml/index.md
 # llms.txt sections now mirror the product tabs (oryxflow, Knowledge, oryxeval, Claude Code, Blog)
 # instead of the old Getting started / Guide / Advanced / ... headings. Intended restructure.
 llms-sections
+
+# The docs moved from the oryxflow repo into oryxlib-docs, so every "Edit this page" link now
+# points at the new repo; the file path part is unchanged (checked by the prefix rule).
+edit-link-prefix:https://github.com/oryxintel/oryxflow/edit/main/docs/=>https://github.com/oryxintel/oryxlib-docs/edit/main/docs/

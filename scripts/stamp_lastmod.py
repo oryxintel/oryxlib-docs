@@ -11,6 +11,10 @@ date of the file's last git commit (`git log -1 --format=%cs`) into
 
 Files without commits (new, untracked) are skipped, so their pages carry no date.
 
+A shallow clone (`git clone --depth 1`, the default on some CI / Cloudflare setups) would give
+every page HEAD's date, so `ensure_full_history` first tries `git fetch --unshallow`; if the
+repo is still shallow, stamping is skipped with a WARNING rather than writing wrong dates.
+
 Usage: python scripts/stamp_lastmod.py [SITE_DIR] [DOCS_DIR]
 """
 import html
@@ -42,6 +46,12 @@ def _front_matter(md: Path) -> dict:
     return meta if isinstance(meta, dict) else {}
 
 
+def _categories(meta: dict) -> list:
+    """Front-matter `categories` as a list; a plain string is one category."""
+    cats = meta.get("categories") or []
+    return [cats] if isinstance(cats, str) else list(cats)
+
+
 def url_for_source(md: Path, docs_dir: Path) -> "str | None":
     """Site-relative URL path of a docs source ('' for the home page), or None if not a page."""
     md, docs_dir = Path(md), Path(docs_dir)
@@ -53,7 +63,7 @@ def url_for_source(md: Path, docs_dir: Path) -> "str | None":
         return None
     if rel.startswith("blog/posts/"):
         meta = _front_matter(md)
-        cats = meta.get("categories") or []
+        cats = _categories(meta)
         slug = str(meta.get("slug") or md.stem)
         return f"blog/{slugify(cats[0])}/{slug}/" if cats else f"blog/{slug}/"
     stem = rel[: -len(".md")]
@@ -62,6 +72,29 @@ def url_for_source(md: Path, docs_dir: Path) -> "str | None":
     if stem.endswith("/index"):
         return stem[: -len("index")]
     return stem + "/"
+
+
+def is_shallow(cwd: Path) -> bool:
+    r = subprocess.run(["git", "rev-parse", "--is-shallow-repository"],
+                       cwd=cwd, capture_output=True, text=True)
+    return r.returncode == 0 and r.stdout.strip() == "true"
+
+
+def ensure_full_history(cwd: Path) -> bool:
+    """True when git dates can be trusted; tries `git fetch --unshallow` on a shallow clone.
+
+    Returns False (after a loud WARNING) if the repo is still shallow, so callers skip stamping.
+    """
+    if not is_shallow(cwd):
+        return True
+    print("shallow clone detected: running `git fetch --unshallow` for real commit dates", flush=True)
+    subprocess.run(["git", "fetch", "--unshallow"], cwd=cwd, capture_output=True, text=True)
+    if is_shallow(cwd):
+        print("WARNING: repository is still shallow (git fetch --unshallow failed); "
+              "SKIPPING <lastmod>/dateModified stamping, since every date would be HEAD's. "
+              "Build from a full clone to get real dates.", flush=True)
+        return False
+    return True
 
 
 def git_date(path: Path, cwd: Path) -> "str | None":
@@ -123,7 +156,7 @@ def dates_by_url(docs_dir: Path) -> PageDates:
         out[url] = d
         if md.relative_to(docs_dir).as_posix().startswith("blog/posts/"):
             meta = _front_matter(md)
-            cats = {slugify(c) for c in meta.get("categories") or []}
+            cats = {slugify(c) for c in _categories(meta)}
             posts.append((d, cats, str(meta.get("date", ""))[:4]))
     return PageDates(out, posts)
 
@@ -205,6 +238,8 @@ def main(argv=None):
     argv = sys.argv[1:] if argv is None else argv
     site = Path(argv[0]) if argv else ROOT / "site"
     docs = Path(argv[1]) if len(argv) > 1 else ROOT / "docs"
+    if not ensure_full_history(docs):
+        return
     print(f"stamped <lastmod> on {stamp_lastmod(site, docs)} sitemap entries; "
           f"dateModified on {stamp_date_modified(site, docs)} pages")
 

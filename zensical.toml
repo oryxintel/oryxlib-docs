@@ -1,4 +1,4 @@
-# zensical.toml - oryxflow documentation site (built with Zensical)
+# zensical.toml - oryxflow / oryxeval documentation site (built with Zensical)
 #
 # Build:   python scripts/build_docs.py   # fetch sources, doc tests, zensical build into ./site
 #          zensical serve                 # live preview at http://127.0.0.1:8000
@@ -24,7 +24,7 @@ copyright = "Copyright &copy; 2026 Oryx Intelligence LLC"
 
 repo_url = "https://github.com/oryxintel/oryxflow"
 repo_name = "oryxintel/oryxflow"
-edit_uri = "edit/main/docs/"
+edit_uri = "https://github.com/oryxintel/oryxlib-docs/edit/main/docs/"
 
 docs_dir = "docs"
 

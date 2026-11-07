@@ -12,9 +12,9 @@ repos:
       #
       # phmdoctest names each generated test after its code block's SOURCE LINE
       # (test_code_66), so editing PROSE above a code block renames the test and leaves
-      # the committed file stale — no behavior change, pure churn, and it fails CI's
-      # `build_docs.py --check`. This hook regenerates them instead of making you
-      # remember. If it rewrites a file, pre-commit reports "files were modified by this
+      # the committed file stale — no behavior change, pure churn. CI deliberately does
+      # not gate on staleness (it does not run `build_docs.py --check`); this hook
+      # regenerates them instead of making you remember. If it rewrites a file, pre-commit reports "files were modified by this
       # hook" and aborts the commit: `git add` the regenerated tests and commit again.
       - id: docs-regen
         name: regenerate doc tests (phmdoctest) + validate front matter
