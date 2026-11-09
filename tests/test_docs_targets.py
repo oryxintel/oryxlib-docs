@@ -146,3 +146,18 @@ def test_code_224(managenamespace):
 
     # Caution- no assertions.
     managenamespace(operation="update", additions=locals())
+
+
+def test_code_234(managenamespace):
+    class WriteSummary(oryxflow.tasks.TaskExcelPandas):
+        persists = ['summary']
+
+        def run(self):
+            df = pd.DataFrame({'rent': [100, 120], 'annual': ['=A2*4', '=A3*4']})
+            self.save({'summary': df}, formatted=True, formulas=['annual'])
+
+    flow_summary = oryxflow.Workflow(WriteSummary)
+    flow_summary.run()
+
+    # Caution- no assertions.
+    managenamespace(operation="update", additions=locals())

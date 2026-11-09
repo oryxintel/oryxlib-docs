@@ -229,10 +229,17 @@ Other sheet options: `colorscale` shades a column from low to high, `banded=True
 
 Text that starts with `=` is saved as text, so a definitions column holding `= rent x 4` shows exactly as typed and the file always opens in Excel. To save real formulas, name the columns that hold them with `formulas`:
 
-<!--phmdoctest-skip-->
+<!--phmdoctest-share-names-->
 ```python
-df = pd.DataFrame({'rent': [100, 120], 'annual': ['=A2*4', '=A3*4']})
-self.save({'summary': df}, formatted=True, formulas=['annual'])
+class WriteSummary(oryxflow.tasks.TaskExcelPandas):
+    persists = ['summary']
+
+    def run(self):
+        df = pd.DataFrame({'rent': [100, 120], 'annual': ['=A2*4', '=A3*4']})
+        self.save({'summary': df}, formatted=True, formulas=['annual'])
+
+flow_summary = oryxflow.Workflow(WriteSummary)
+flow_summary.run()
 ```
 
 `formulas` works like `wrap_columns`: give it for the whole save or in one sheet's options.
