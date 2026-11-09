@@ -227,7 +227,17 @@ back = pd.read_excel(path_rank, sheet_name='retail', skiprows=3, dtype={'fips': 
 
 Other sheet options: `colorscale` shades a column from low to high, `banded=True` stripes alternate rows, `wrap_columns` wraps long text, `group_starts` draws a divider before a column, `freeze=2` keeps the first two columns in view while scrolling, and `filters=False` turns the filter arrows off. Highlight colours are `'green'`, `'yellow'`, `'red'` and `'grey'`.
 
-Options given to the whole save apply to every sheet, and a sheet's own options override them. A column named in a whole-workbook `highlight`, `colorscale`, `wrap_columns`, `group_starts` or `id_columns` applies to the sheets that have it; a name that no sheet has is an error, and so is a name missing from the sheet whose own spec lists it. A sheet's `formats` adds to the shared `formats` rather than replacing it: shared `formats={'*_pct': 'pct'}` plus a sheet's `{'*': 'num1'}` formats that sheet's percent columns as percents and the rest with one decimal. Set a column to `None` in the sheet's `formats` to drop a shared format for it, or `formats=False` for no number formats on that sheet.
+Text that starts with `=` is saved as text, so a definitions column holding `= rent x 4` shows exactly as typed and the file always opens in Excel. To save real formulas, name the columns that hold them with `formulas`:
+
+<!--phmdoctest-skip-->
+```python
+df = pd.DataFrame({'rent': [100, 120], 'annual': ['=A2*4', '=A3*4']})
+self.save({'summary': df}, formatted=True, formulas=['annual'])
+```
+
+`formulas` works like `wrap_columns`: give it for the whole save or in one sheet's options.
+
+Options given to the whole save apply to every sheet, and a sheet's own options override them. A column named in a whole-workbook `highlight`, `colorscale`, `wrap_columns`, `formulas`, `group_starts` or `id_columns` applies to the sheets that have it; a name that no sheet has is an error, and so is a name missing from the sheet whose own spec lists it. A sheet's `formats` adds to the shared `formats` rather than replacing it: shared `formats={'*_pct': 'pct'}` plus a sheet's `{'*': 'num1'}` formats that sheet's percent columns as percents and the rest with one decimal. Set a column to `None` in the sheet's `formats` to drop a shared format for it, or `formats=False` for no number formats on that sheet.
 
 `excel_write` also takes an open file instead of a path.
 

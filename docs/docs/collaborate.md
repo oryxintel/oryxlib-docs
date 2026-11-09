@@ -75,6 +75,33 @@ class SectorReturns(oryxflow.tasks.TaskPqPandas):
 
 **The defaults are your prod build.** A plain `flow.run()` builds exactly what other projects read, and a new quarter is an edit to a default: it shows in your code diff and in `tasks_export.py`. A run stops before building, with `SectorReturns.refresh: exported parameters need a default -- the value consumers should get (prod)`, when an exported parameter has none.
 
+**A parameter shared by many tasks.** If your prod values used to live in `flow_params.py` (passed with `Workflow(params=...)`), and a parameter such as `refresh` is declared on many tasks, give it one default in one place. Define it once in a module:
+
+```python
+# params_prod.py
+import datetime
+import oryxflow
+refresh = oryxflow.DateParameter(default=datetime.date(2026, 11, 5))
+```
+
+and use it on every task that declares `refresh`:
+
+```python
+import params_prod
+class LoadReturns(oryxflow.tasks.TaskPqPandas):
+    refresh = params_prod.refresh
+@oryxflow.requires(LoadReturns)
+class SectorReturns(oryxflow.tasks.TaskPqPandas):
+    export = True
+    refresh = params_prod.refresh
+```
+
+Every task now has the same prod default, and a new quarter is a one-line edit in `params_prod.py`. Then remove `refresh` from your workflow params. `Workflow(params=...)` still overrides it for an experiment (run those with `env='dev'`). Task ids don't change.
+
+Write the default even for a yes/no setting: an exported `oryxflow.BoolParameter()` without `default=` stops the run, so the prod value is always written down. Use `oryxflow.BoolParameter(default=True)` or `(default=False)`.
+
+If a task requires two tasks that declare the same parameter with different defaults, oryxflow warns when the task is defined and names both. Your task takes the first one's default and passes it to the second as well. Share one parameter as above, or declare the parameter on your task to choose.
+
 Every `flow.run()` that includes an exported task rewrites `tasks_export.py` at the project root -- the folder that holds `data/`, so run your flow from there, as usual. For each exported task it holds a read-only copy: the docstring, the output format, `persists`, the parameters with their defaults, `external = True` (never run, only read) and the data path, written relative to the file so it works wherever the folders live. `built` lists the parameter values your runs have built since the task was exported, as long as their output is still there (an output built before you added `export = True` appears once a run includes it). The values are plain Python values (`{'year': 2026, 'debug': False}`), so you can compare them or pass one straight to a `Workflow`:
 
 ```python
@@ -162,6 +189,20 @@ class MarketReport(oryxflow.tasks.TaskPqPandas):
 - Your task reruns when its input changes: a new value in `bind()`, a new default in `project1`, or `project1` recomputing that build.
 
 Moving an existing pipeline to this (from passed-through parameters, or from reading a published file) changes your tasks' names, so they recompute once.
+
+#### When the producer changes a parameter
+
+`built` only lists builds you can select. If the producer removes, renames or adds a parameter on an exported task, builds made under the old parameters are taken off `built` the next time the producer runs (their files stay where they are), and the producer sees:
+
+```
+UserWarning: 2 built entries dropped for ReturnsMarket: parameters no longer on the class: source_run
+```
+
+So `exported.ReturnsMarket.bind(**exported.ReturnsMarket.built[i])` works for every entry listed. If you had bound one of the dropped builds, move to a current one from `built`.
+
+#### Importing from a producer on an older oryxflow
+
+A `tasks_export.py` written before 26.11.6 may have parameters without a default. Those can't be fixed to the producer's prod value, so they work as before: they are copied onto your task, and you set them in your flow. The import warns, for example `Returns: parameter period has no default ... re-run the producer on oryxflow >= 26.11.6 to write defaults`. Ask the producer to re-run on a current oryxflow; after that every parameter is fixed to its default and you can remove `period` from your flow parameters.
 
 ### Published files or `FlowImport`?
 
